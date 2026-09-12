@@ -56,13 +56,13 @@ class _UrlEncodeDialogState extends State<UrlEncodeDialog> {
               groupValue: _mode,
               labels: ["Encode","Decode"],
               onChanged: (value) {
-                String input2 = "";
                 setState(() => _mode = value);
-                if (_input.isEmpty) return;
+                if (_input.isEmpty || _output == null) return;
+                final previousInput = _input;
                 setState(() {
-                  input2 = _input;
-                  _input = _output!; _inputController.text = _output!;
-                  _output = input2;
+                  _input = _output!;
+                  _inputController.text = _output!;
+                  _output = previousInput;
                 });
               }
           ),

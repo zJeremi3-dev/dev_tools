@@ -12,7 +12,7 @@ class PasswordGenDialog extends StatefulWidget {
   State<PasswordGenDialog> createState() => _PasswordGenDialogState();
 }
 class _PasswordGenDialogState extends State<PasswordGenDialog> {
-  final lengthController = TextEditingController();
+  final lengthController = TextEditingController(text: '16');
   final numberController = TextEditingController();
   final symbolsController = TextEditingController();
   int _length = 16; int _minNum = 1; int _minSym = 0;
