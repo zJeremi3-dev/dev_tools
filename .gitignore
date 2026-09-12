@@ -1,0 +1,45 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildpath
+.history
+.metadata
+.plugins
+.settings
+.vscode/
+
+# Tooling
+.idea/
+.dart_tool/
+.fvm/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+# Build artifacts
+build/
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# C++ / Ephemeral files
+windows/flutter/ephemeral/
+linux/flutter/ephemeral/
+macos/Flutter/ephemeral/
+
+# Symlinks
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/app.flx
+ios/Flutter/app.zip
+ios/Flutter/flutter_assets/
+
+# Exceptions to keep
+!/packages/flutter_tools/bin/flutter_tools.dat

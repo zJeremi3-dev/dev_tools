@@ -1,0 +1,83 @@
+name: dev_tools
+description: "A board with many Tools that Developer need."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.6.1
+  shared_preferences: ^2.5.5
+  file_picker: ^8.1.7
+  audioplayers: ^6.1.0
+  path_provider: ^2.1.5
+  path: ^1.9.0
+  win32audio: ^1.5.0
+  url_launcher: ^6.3.2
+  reorderable_grid_view: ^2.2.8
+  qr: ^3.0.0
+  barcode_widget: ^2.0.4
+  pasteboard: ^0.2.0
+  super_clipboard: ^0.8.4
+  crypto: ^3.0.3
+  flutter_hsvcolor_picker: ^1.2.3
+  flutter_native_splash: ^2.4.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/devtools_logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  windows:
+    generate: true
+    image_path: "assets/devtools_logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/devtools_logo.png"
+  # --- Hier wird Web hinzugefügt ---
+  web:
+    generate: true
+    image_path: "assets/devtools_logo.png"
+    background_color: "#1C1B22" # Optional: Hintergrundfarbe für das Web-Manifest
+    theme_color: "#1C1B22"      # Optional: Theme-Farbe für die Browserleiste
+
+flutter_native_splash:
+  color: "#0F0F13"
+  color_dark: "#0F0F13"
+
+  image: assets/devtools_symbol.png
+  image_dark: assets/devtools_symbol.png
+
+  branding: assets/branding.png
+  branding_dark: assets/branding.png
+  branding_mode: bottom        # bottom (Standard) oder avoid (bei Notch/Safe-Area)
+  branding_bottom_padding: 24  # Abstand zum unteren Rand in px
+
+  android: true
+  ios: true
+  web: true
+
+  android_12:
+    image: assets/devtools_symbol.png
+    icon_background_color: "#0F0F13"
+    color: "#0F0F13"
+    color_dark: "#0F0F13"
+
+  fullscreen: true
+  web_image_mode: center
+
+flutter:
+  uses-material-design: true
