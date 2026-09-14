@@ -10,6 +10,7 @@ class UnixTimestampDialog extends StatefulWidget {
   @override
   State<UnixTimestampDialog> createState() => _UnixTimestampDialogState();
 }
+
 class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
   final _timestampController = TextEditingController();
   int _mode = 0; // 0 = Timestamp -> Date, 1 = Date -> Timestamp
@@ -30,12 +31,20 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
   void _convertFromTimestamp() {
     final raw = _timestampController.text.trim();
     if (raw.isEmpty) {
-      setState(() { _dateOutput = null; _utcOutput = null; _error = null; });
+      setState(() {
+        _dateOutput = null;
+        _utcOutput = null;
+        _error = null;
+      });
       return;
     }
     final value = int.tryParse(raw);
     if (value == null) {
-      setState(() { _dateOutput = null; _utcOutput = null; _error = 'Invalid timestamp'; });
+      setState(() {
+        _dateOutput = null;
+        _utcOutput = null;
+        _error = 'Invalid timestamp';
+      });
       return;
     }
     try {
@@ -48,14 +57,26 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
         _error = null;
       });
     } catch (e) {
-      setState(() { _dateOutput = null; _utcOutput = null; _error = 'Invalid timestamp'; });
+      setState(() {
+        _dateOutput = null;
+        _utcOutput = null;
+        _error = 'Invalid timestamp';
+      });
     }
   }
 
   void _convertFromDate() {
-    final dt = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day, _selectedTime.hour, _selectedTime.minute);
+    final dt = DateTime(
+      _selectedDate.year,
+      _selectedDate.month,
+      _selectedDate.day,
+      _selectedTime.hour,
+      _selectedTime.minute,
+    );
     setState(() {
-      _timestampOutput = _isMillis ? dt.millisecondsSinceEpoch : (dt.millisecondsSinceEpoch / 1000).round();
+      _timestampOutput = _isMillis
+          ? dt.millisecondsSinceEpoch
+          : (dt.millisecondsSinceEpoch / 1000).round();
       _error = null;
     });
   }
@@ -65,7 +86,9 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
     setState(() {
       _selectedDate = now;
       _selectedTime = TimeOfDay.fromDateTime(now);
-      _timestampController.text = _isMillis ? now.millisecondsSinceEpoch.toString() : (now.millisecondsSinceEpoch ~/ 1000).toString();
+      _timestampController.text = _isMillis
+          ? now.millisecondsSinceEpoch.toString()
+          : (now.millisecondsSinceEpoch ~/ 1000).toString();
     });
     _mode == 0 ? _convertFromTimestamp() : _convertFromDate();
   }
@@ -82,8 +105,12 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
       _convertFromDate();
     }
   }
+
   Future<void> _pickTime() async {
-    final picked = await showTimePicker(context: context, initialTime: _selectedTime);
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+    );
     if (picked != null) {
       setState(() => _selectedTime = picked);
       _convertFromDate();
@@ -95,6 +122,7 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
     super.initState();
     _convertFromDate();
   }
+
   @override
   void dispose() {
     _timestampController.dispose();
@@ -112,7 +140,14 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Unix-Timestamp', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'Unix-Timestamp',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -144,7 +179,10 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
               TextButton.icon(
                 onPressed: _setNow,
                 icon: Icon(Icons.access_time, size: 16, color: kAccentLight),
-                label: Text('Now', style: TextStyle(color: kAccentLight, fontSize: 12)),
+                label: Text(
+                  'Now',
+                  style: TextStyle(color: kAccentLight, fontSize: 12),
+                ),
               ),
             ],
           ),
@@ -157,10 +195,22 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
                 TextField(
                   controller: _timestampController,
                   autofocus: true,
-                  decoration: fieldDecoration(_isMillis ? 'Milliseconds since 1970' : 'Seconds since 1970'),
-                  style: TextStyle(color: kTextPrimary, fontSize: 14, fontFamily: 'monospace'),
-                  keyboardType: const TextInputType.numberWithOptions(signed: true),
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9-]'))],
+                  decoration: fieldDecoration(
+                    _isMillis
+                        ? 'Milliseconds since 1970'
+                        : 'Seconds since 1970',
+                  ),
+                  style: TextStyle(
+                    color: kTextPrimary,
+                    fontSize: 14,
+                    fontFamily: 'monospace',
+                  ),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    signed: true,
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
+                  ],
                   onChanged: (_) => _convertFromTimestamp(),
                 ),
               ],
@@ -175,18 +225,40 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               child: _error != null
-                  ? Text(_error!, style: TextStyle(color: Colors.redAccent, fontSize: 13))
+                  ? Text(
+                      _error!,
+                      style: TextStyle(color: Colors.redAccent, fontSize: 13),
+                    )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Expanded(child: Text('Local: ${_dateOutput ?? '—'}', style: TextStyle(color: kTextPrimary, fontSize: 13, fontFamily: 'monospace'))),
-                            buildCopyButton(context: context, copyText: _dateOutput ?? "")
+                            Expanded(
+                              child: Text(
+                                'Local: ${_dateOutput ?? '—'}',
+                                style: TextStyle(
+                                  color: kTextPrimary,
+                                  fontSize: 13,
+                                  fontFamily: 'monospace',
+                                ),
+                              ),
+                            ),
+                            buildCopyButton(
+                              context: context,
+                              copyText: _dateOutput ?? "",
+                            ),
                           ],
                         ),
                         const SizedBox(height: 6),
-                        Text('UTC: ${_utcOutput ?? '—'}', style: TextStyle(color: kTextSecondary, fontSize: 13, fontFamily: 'monospace')),
+                        Text(
+                          'UTC: ${_utcOutput ?? '—'}',
+                          style: TextStyle(
+                            color: kTextSecondary,
+                            fontSize: 13,
+                            fontFamily: 'monospace',
+                          ),
+                        ),
                       ],
                     ),
             ),
@@ -199,16 +271,30 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: _pickDate,
-                        icon: Icon(Icons.calendar_today, size: 15, color: kAccentLight),
-                        label: Text('${_pad(_selectedDate.day)}.${_pad(_selectedDate.month)}.${_selectedDate.year}', style: TextStyle(color: kTextPrimary, fontSize: 13)),
+                        icon: Icon(
+                          Icons.calendar_today,
+                          size: 15,
+                          color: kAccentLight,
+                        ),
+                        label: Text(
+                          '${_pad(_selectedDate.day)}.${_pad(_selectedDate.month)}.${_selectedDate.year}',
+                          style: TextStyle(color: kTextPrimary, fontSize: 13),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: _pickTime,
-                        icon: Icon(Icons.access_time, size: 15, color: kAccentLight),
-                        label: Text('${_pad(_selectedTime.hour)}:${_pad(_selectedTime.minute)}', style: TextStyle(color: kTextPrimary, fontSize: 13)),
+                        icon: Icon(
+                          Icons.access_time,
+                          size: 15,
+                          color: kAccentLight,
+                        ),
+                        label: Text(
+                          '${_pad(_selectedTime.hour)}:${_pad(_selectedTime.minute)}',
+                          style: TextStyle(color: kTextPrimary, fontSize: 13),
+                        ),
                       ),
                     ),
                   ],
@@ -226,8 +312,20 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               child: Row(
                 children: [
-                  Expanded(child: Text('Timestamp: ${_timestampOutput ?? '—'}', style: TextStyle(color: kTextPrimary, fontSize: 15, fontFamily: 'monospace'))),
-                  buildCopyButton(context: context, copyText: _timestampOutput.toString())
+                  Expanded(
+                    child: Text(
+                      'Timestamp: ${_timestampOutput ?? '—'}',
+                      style: TextStyle(
+                        color: kTextPrimary,
+                        fontSize: 15,
+                        fontFamily: 'monospace',
+                      ),
+                    ),
+                  ),
+                  buildCopyButton(
+                    context: context,
+                    copyText: _timestampOutput.toString(),
+                  ),
                 ],
               ),
             ),
@@ -242,10 +340,18 @@ class _UnixTimestampDialogState extends State<UnixTimestampDialog> {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

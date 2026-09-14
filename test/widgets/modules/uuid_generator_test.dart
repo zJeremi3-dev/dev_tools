@@ -16,18 +16,29 @@ void main() {
 
   testWidgets('every generated UUID is a valid v4 UUID', (tester) async {
     await tester.pumpWidget(wrap());
-    final uuids = tester.widgetList<SelectableText>(find.byType(SelectableText));
+    final uuids = tester.widgetList<SelectableText>(
+      find.byType(SelectableText),
+    );
     for (final t in uuids) {
-      expect(_uuidV4Pattern.hasMatch(t.data!), isTrue, reason: 'Invalid UUID: ${t.data}');
+      expect(
+        _uuidV4Pattern.hasMatch(t.data!),
+        isTrue,
+        reason: 'Invalid UUID: ${t.data}',
+      );
     }
   });
 
-  testWidgets('unchecking hyphens removes them from the output', (tester) async {
+  testWidgets('unchecking hyphens removes them from the output', (
+    tester,
+  ) async {
     await tester.pumpWidget(wrap());
     await tester.tap(find.byType(Checkbox).at(1)); // Hyphens
     await tester.pump();
 
-    final uuid = tester.widgetList<SelectableText>(find.byType(SelectableText)).first.data!;
+    final uuid = tester
+        .widgetList<SelectableText>(find.byType(SelectableText))
+        .first
+        .data!;
     expect(uuid.contains('-'), isFalse);
     expect(uuid.length, 32);
   });
@@ -37,7 +48,10 @@ void main() {
     await tester.tap(find.byType(Checkbox).at(0)); // Uppercase
     await tester.pump();
 
-    final uuid = tester.widgetList<SelectableText>(find.byType(SelectableText)).first.data!;
+    final uuid = tester
+        .widgetList<SelectableText>(find.byType(SelectableText))
+        .first
+        .data!;
     expect(uuid, uuid.toUpperCase());
   });
 

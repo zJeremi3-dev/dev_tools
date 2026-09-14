@@ -11,10 +11,13 @@ class RandomNumberDialog extends StatefulWidget {
   @override
   State<RandomNumberDialog> createState() => _RandomNumberDialogState();
 }
+
 class _RandomNumberDialogState extends State<RandomNumberDialog> {
   final _fromInputController = TextEditingController();
   final _toInputController = TextEditingController();
-  int? _fromInput = 1; int? _toInput = 100; int? _output;
+  int? _fromInput = 1;
+  int? _toInput = 100;
+  int? _output;
 
   @override
   void initState() {
@@ -25,12 +28,14 @@ class _RandomNumberDialogState extends State<RandomNumberDialog> {
     randomizer();
     super.initState();
   }
+
   @override
   void dispose() {
     _fromInputController.dispose();
     _toInputController.dispose();
     super.dispose();
   }
+
   void randomizer() {
     if (_fromInput == null) return;
     if (_toInput == null) return;
@@ -38,12 +43,15 @@ class _RandomNumberDialogState extends State<RandomNumberDialog> {
       int x = 0;
       setState(() {
         x = _fromInput!;
-        _fromInput = _toInput; _toInput = x;
+        _fromInput = _toInput;
+        _toInput = x;
         _fromInputController.text = _fromInput.toString();
         _toInputController.text = _toInput.toString();
       });
     }
-    setState(() {_output = _fromInput! + Random().nextInt(_toInput! - _fromInput! + 1);});
+    setState(() {
+      _output = _fromInput! + Random().nextInt(_toInput! - _fromInput! + 1);
+    });
   }
 
   @override
@@ -57,7 +65,14 @@ class _RandomNumberDialogState extends State<RandomNumberDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Binary ↔ Decimal', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'Binary ↔ Decimal',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -70,37 +85,57 @@ class _RandomNumberDialogState extends State<RandomNumberDialog> {
 
           // Output
           Container(
-              decoration: BoxDecoration(
-                color: kBgColor,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: kAccent.withAlpha(40)),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              child: Row(
-                children: [
-                  Expanded(child:Text("Result: $_output", style: TextStyle(color: kTextPrimary, fontSize: 15, letterSpacing: 2, fontFamily: 'monospace'))),
-                  Tooltip(
-                    message: "Generate",
-                    decoration: BoxDecoration(
-                        color: kSurfaceColor,
-                        border: Border.all(width: 1, color: kAccent),
-                        borderRadius: BorderRadius.circular(5)
+            decoration: BoxDecoration(
+              color: kBgColor,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: kAccent.withAlpha(40)),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "Result: $_output",
+                    style: TextStyle(
+                      color: kTextPrimary,
+                      fontSize: 15,
+                      letterSpacing: 2,
+                      fontFamily: 'monospace',
                     ),
-                    textStyle: TextStyle(color: kTextPrimary),
-                    child: IconButton(
-                        onPressed: () {randomizer();},
-                        icon: _output == null ? Icon(Icons.play_arrow) : Icon(Icons.refresh_rounded),
-                        color: kAccentLight,
-                        iconSize: 22,
-                        style: ButtonStyle(shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))),
-                        constraints: BoxConstraints(minWidth: 32, minHeight: 32),
-                        padding: EdgeInsets.zero
-                    )
                   ),
-                  const SizedBox(width: 12),
-                  buildCopyButton(context: context, copyText: _output.toString())
-                ],
-              )
+                ),
+                Tooltip(
+                  message: "Generate",
+                  decoration: BoxDecoration(
+                    color: kSurfaceColor,
+                    border: Border.all(width: 1, color: kAccent),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  textStyle: TextStyle(color: kTextPrimary),
+                  child: IconButton(
+                    onPressed: () {
+                      randomizer();
+                    },
+                    icon: _output == null
+                        ? Icon(Icons.play_arrow)
+                        : Icon(Icons.refresh_rounded),
+                    color: kAccentLight,
+                    iconSize: 22,
+                    style: ButtonStyle(
+                      shape: WidgetStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    constraints: BoxConstraints(minWidth: 32, minHeight: 32),
+                    padding: EdgeInsets.zero,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                buildCopyButton(context: context, copyText: _output.toString()),
+              ],
+            ),
           ),
           const SizedBox(height: 14),
 
@@ -118,7 +153,9 @@ class _RandomNumberDialogState extends State<RandomNumberDialog> {
                       style: TextStyle(color: kTextPrimary, fontSize: 14),
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      onChanged: (value) {setState(() => _fromInput = int.tryParse(value));},
+                      onChanged: (value) {
+                        setState(() => _fromInput = int.tryParse(value));
+                      },
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -130,12 +167,13 @@ class _RandomNumberDialogState extends State<RandomNumberDialog> {
                       style: TextStyle(color: kTextPrimary, fontSize: 14),
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      onChanged: (value) {setState(() => _toInput = int.tryParse(value));},
+                      onChanged: (value) {
+                        setState(() => _toInput = int.tryParse(value));
+                      },
                     ),
-                  )
-
+                  ),
                 ],
-              )
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -148,10 +186,18 @@ class _RandomNumberDialogState extends State<RandomNumberDialog> {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

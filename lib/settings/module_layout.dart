@@ -21,7 +21,13 @@ class _ModuleLayoutSectionState extends State<ModuleLayoutSection> {
 
   void save() {
     int type;
-    if (custom) {type = 1;} else if (tabular) {type = 3;} else {type = 2;}
+    if (custom) {
+      type = 1;
+    } else if (tabular) {
+      type = 3;
+    } else {
+      type = 2;
+    }
     widget.onChanged?.call(type);
   }
 
@@ -30,21 +36,46 @@ class _ModuleLayoutSectionState extends State<ModuleLayoutSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Module Layout", style: TextStyle(color: kTextSecondary, fontSize: 15, letterSpacing: 0.8)),
+        Text(
+          "Module Layout",
+          style: TextStyle(
+            color: kTextSecondary,
+            fontSize: 15,
+            letterSpacing: 0.8,
+          ),
+        ),
         SizedBox(height: 8),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildCheckboxOption("Custom", custom, () {setState(() {custom = !custom; if(custom) tabular = false;});save();}),
+            buildCheckboxOption("Custom", custom, () {
+              setState(() {
+                custom = !custom;
+                if (custom) tabular = false;
+              });
+              save();
+            }),
             SizedBox(width: 30),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildCheckboxOption("Category", !custom, () {setState(() {custom = !custom; if(custom) tabular = false;});save();}),
+                buildCheckboxOption("Category", !custom, () {
+                  setState(() {
+                    custom = !custom;
+                    if (custom) tabular = false;
+                  });
+                  save();
+                }),
                 SizedBox(height: 4),
-                buildCheckboxOption("Tabular", tabular, () {setState(() {if (custom) custom = !custom;tabular = !tabular;});save();})
+                buildCheckboxOption("Tabular", tabular, () {
+                  setState(() {
+                    if (custom) custom = !custom;
+                    tabular = !tabular;
+                  });
+                  save();
+                }),
               ],
-            )
+            ),
           ],
         ),
       ],

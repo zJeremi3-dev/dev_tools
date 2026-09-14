@@ -52,9 +52,11 @@ void main() {
 
       expect(c.filteredTools, isNotEmpty);
       expect(
-        c.filteredTools.every((t) =>
-            t.name.toLowerCase().contains('password') ||
-            t.description.toLowerCase().contains('password')),
+        c.filteredTools.every(
+          (t) =>
+              t.name.toLowerCase().contains('password') ||
+              t.description.toLowerCase().contains('password'),
+        ),
         isTrue,
       );
     });
@@ -191,7 +193,10 @@ void main() {
       expect(otherIdsAfter, otherIdsBefore);
       // the moved tool (formerly first) is now last within its category,
       // and everything else shifted up by one
-      final expected = [...generatorIdsBefore.skip(1), generatorIdsBefore.first];
+      final expected = [
+        ...generatorIdsBefore.skip(1),
+        generatorIdsBefore.first,
+      ];
       expect(generatorIdsAfter, expected);
     });
 

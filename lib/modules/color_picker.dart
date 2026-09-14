@@ -10,9 +10,11 @@ class ColorPickerDialog extends StatefulWidget {
   @override
   State<ColorPickerDialog> createState() => _ColorPickerDialogState();
 }
+
 class _ColorPickerDialogState extends State<ColorPickerDialog> {
   Color _color = kAccent;
-  String get _hex => '#${_color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}';
+  String get _hex =>
+      '#${_color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}';
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,14 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Color Picker', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'Color Picker',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -38,17 +47,17 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
 
           // Picker
           buildSection(
-              label: "",
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: ColorPicker(
-                    color: _color,
-                    onChanged: (value) => setState(() => _color = value),
-                    initialPicker: Picker.paletteHue,
-                  ),
-                )
-              ]
+            label: "",
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: ColorPicker(
+                  color: _color,
+                  onChanged: (value) => setState(() => _color = value),
+                  initialPicker: Picker.paletteHue,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
 
@@ -75,10 +84,15 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
                 Expanded(
                   child: Text(
                     _hex,
-                    style: TextStyle(color: kTextPrimary, fontSize: 15, letterSpacing: 1, fontFamily: 'monospace'),
+                    style: TextStyle(
+                      color: kTextPrimary,
+                      fontSize: 15,
+                      letterSpacing: 1,
+                      fontFamily: 'monospace',
+                    ),
                   ),
                 ),
-                buildCopyButton(context: context, copyText: _hex)
+                buildCopyButton(context: context, copyText: _hex),
               ],
             ),
           ),
@@ -92,10 +106,18 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

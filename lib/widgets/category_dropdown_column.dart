@@ -41,8 +41,21 @@ class _CategoryDropdownColumnState extends State<CategoryDropdownColumn> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(widget.category, style: TextStyle(color: kAccentLight, fontSize: 13, fontWeight: FontWeight.w700)),
-                  Icon(_expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: kTextSecondary, size: 18),
+                  Text(
+                    widget.category,
+                    style: TextStyle(
+                      color: kAccentLight,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Icon(
+                    _expanded
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                    color: kTextSecondary,
+                    size: 18,
+                  ),
                 ],
               ),
             ),
@@ -52,7 +65,11 @@ class _CategoryDropdownColumnState extends State<CategoryDropdownColumn> {
             curve: Curves.easeInOut,
             alignment: Alignment.topCenter,
             child: _expanded
-                ? Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: widget.items)
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: widget.items,
+                  )
                 : const SizedBox(width: double.infinity),
           ),
         ],
@@ -78,17 +95,24 @@ Widget buildTabularToolRow({
         child: Row(
           children: [
             Expanded(
-                child: Row(
-                  children: [
-                    Icon(icon, color: kAccentLight, size: 20), SizedBox(width: 10),
-                    Text(name, style: TextStyle(color: kTextPrimary, fontSize: 12), maxLines: 1, overflow: TextOverflow.ellipsis),
-                  ],
-                )
+              child: Row(
+                children: [
+                  Icon(icon, color: kAccentLight, size: 20),
+                  SizedBox(width: 10),
+                  Text(
+                    name,
+                    style: TextStyle(color: kTextPrimary, fontSize: 12),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
             GestureDetector(
               onTap: onToggleFavorite,
               child: Icon(
-                isFavorite ? Icons.star_rounded : Icons.star_border_rounded, size: 18,
+                isFavorite ? Icons.star_rounded : Icons.star_border_rounded,
+                size: 18,
                 color: isFavorite ? Colors.yellow : kTextSecondary,
               ),
             ),

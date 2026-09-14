@@ -20,12 +20,16 @@ void main() {
   Widget wrap(Widget child) => MaterialApp(home: Scaffold(body: child));
 
   testWidgets('renders name, description and icon', (tester) async {
-    await tester.pumpWidget(wrap(ToolCard(
-      module: testModule,
-      isFavorite: false,
-      onToggleFavorite: () {},
-      onSecondaryTapDown: (_) {},
-    )));
+    await tester.pumpWidget(
+      wrap(
+        ToolCard(
+          module: testModule,
+          isFavorite: false,
+          onToggleFavorite: () {},
+          onSecondaryTapDown: (_) {},
+        ),
+      ),
+    );
 
     expect(find.text('Test Tool'), findsOneWidget);
     expect(find.text('A tool used only for testing'), findsOneWidget);
@@ -33,37 +37,51 @@ void main() {
   });
 
   testWidgets('shows outlined star when not favorite', (tester) async {
-    await tester.pumpWidget(wrap(ToolCard(
-      module: testModule,
-      isFavorite: false,
-      onToggleFavorite: () {},
-      onSecondaryTapDown: (_) {},
-    )));
+    await tester.pumpWidget(
+      wrap(
+        ToolCard(
+          module: testModule,
+          isFavorite: false,
+          onToggleFavorite: () {},
+          onSecondaryTapDown: (_) {},
+        ),
+      ),
+    );
 
     expect(find.byIcon(Icons.star_border_rounded), findsOneWidget);
     expect(find.byIcon(Icons.star_rounded), findsNothing);
   });
 
   testWidgets('shows filled star when favorite', (tester) async {
-    await tester.pumpWidget(wrap(ToolCard(
-      module: testModule,
-      isFavorite: true,
-      onToggleFavorite: () {},
-      onSecondaryTapDown: (_) {},
-    )));
+    await tester.pumpWidget(
+      wrap(
+        ToolCard(
+          module: testModule,
+          isFavorite: true,
+          onToggleFavorite: () {},
+          onSecondaryTapDown: (_) {},
+        ),
+      ),
+    );
 
     expect(find.byIcon(Icons.star_rounded), findsOneWidget);
     expect(find.byIcon(Icons.star_border_rounded), findsNothing);
   });
 
-  testWidgets('tapping the star calls onToggleFavorite exactly once', (tester) async {
+  testWidgets('tapping the star calls onToggleFavorite exactly once', (
+    tester,
+  ) async {
     var callCount = 0;
-    await tester.pumpWidget(wrap(ToolCard(
-      module: testModule,
-      isFavorite: false,
-      onToggleFavorite: () => callCount++,
-      onSecondaryTapDown: (_) {},
-    )));
+    await tester.pumpWidget(
+      wrap(
+        ToolCard(
+          module: testModule,
+          isFavorite: false,
+          onToggleFavorite: () => callCount++,
+          onSecondaryTapDown: (_) {},
+        ),
+      ),
+    );
 
     await tester.tap(find.byIcon(Icons.star_border_rounded));
     await tester.pump();
@@ -71,13 +89,19 @@ void main() {
     expect(callCount, 1);
   });
 
-  testWidgets('tapping the star does not also open the tool dialog', (tester) async {
-    await tester.pumpWidget(wrap(ToolCard(
-      module: testModule,
-      isFavorite: false,
-      onToggleFavorite: () {},
-      onSecondaryTapDown: (_) {},
-    )));
+  testWidgets('tapping the star does not also open the tool dialog', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      wrap(
+        ToolCard(
+          module: testModule,
+          isFavorite: false,
+          onToggleFavorite: () {},
+          onSecondaryTapDown: (_) {},
+        ),
+      ),
+    );
 
     await tester.tap(find.byIcon(Icons.star_border_rounded));
     await tester.pumpAndSettle();
@@ -88,12 +112,16 @@ void main() {
   });
 
   testWidgets('tapping the card body opens the tool dialog', (tester) async {
-    await tester.pumpWidget(wrap(ToolCard(
-      module: testModule,
-      isFavorite: false,
-      onToggleFavorite: () {},
-      onSecondaryTapDown: (_) {},
-    )));
+    await tester.pumpWidget(
+      wrap(
+        ToolCard(
+          module: testModule,
+          isFavorite: false,
+          onToggleFavorite: () {},
+          onSecondaryTapDown: (_) {},
+        ),
+      ),
+    );
 
     await tester.tap(find.text('Test Tool'));
     await tester.pumpAndSettle();
@@ -102,14 +130,20 @@ void main() {
     expect(find.text('Dialog content'), findsOneWidget);
   });
 
-  testWidgets('right-click / secondary tap reports the tap position', (tester) async {
+  testWidgets('right-click / secondary tap reports the tap position', (
+    tester,
+  ) async {
     Offset? reportedPosition;
-    await tester.pumpWidget(wrap(ToolCard(
-      module: testModule,
-      isFavorite: false,
-      onToggleFavorite: () {},
-      onSecondaryTapDown: (pos) => reportedPosition = pos,
-    )));
+    await tester.pumpWidget(
+      wrap(
+        ToolCard(
+          module: testModule,
+          isFavorite: false,
+          onToggleFavorite: () {},
+          onSecondaryTapDown: (pos) => reportedPosition = pos,
+        ),
+      ),
+    );
 
     final gesture = await tester.startGesture(
       tester.getCenter(find.text('Test Tool')),
@@ -122,7 +156,9 @@ void main() {
     expect(reportedPosition, isNotNull);
   });
 
-  testWidgets('long tool name is truncated with ellipsis, not wrapped', (tester) async {
+  testWidgets('long tool name is truncated with ellipsis, not wrapped', (
+    tester,
+  ) async {
     final longNameModule = ToolModule(
       id: 2,
       name: 'A Very Long Tool Name That Should Not Wrap Across Lines',
@@ -132,15 +168,19 @@ void main() {
       dialogBuilder: (context) => const SizedBox(),
     );
 
-    await tester.pumpWidget(wrap(SizedBox(
-      width: 200, // deliberately narrow to force truncation
-      child: ToolCard(
-        module: longNameModule,
-        isFavorite: false,
-        onToggleFavorite: () {},
-        onSecondaryTapDown: (_) {},
+    await tester.pumpWidget(
+      wrap(
+        SizedBox(
+          width: 200, // deliberately narrow to force truncation
+          child: ToolCard(
+            module: longNameModule,
+            isFavorite: false,
+            onToggleFavorite: () {},
+            onSecondaryTapDown: (_) {},
+          ),
+        ),
       ),
-    )));
+    );
 
     final textWidget = tester.widget<Text>(find.text(longNameModule.name));
     expect(textWidget.maxLines, 1);

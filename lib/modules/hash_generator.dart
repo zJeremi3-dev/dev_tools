@@ -11,6 +11,7 @@ class HashGenDialog extends StatefulWidget {
   @override
   State<HashGenDialog> createState() => _HashGenDialogState();
 }
+
 class _HashGenDialogState extends State<HashGenDialog> {
   final _inputController = TextEditingController();
   String _text = "";
@@ -22,11 +23,16 @@ class _HashGenDialogState extends State<HashGenDialog> {
     if (_text.isEmpty) return "";
     final bytes = utf8.encode(_text);
     switch (_selectedAlgo) {
-      case "MD5":    return md5.convert(bytes).toString();
-      case "SHA-1":  return sha1.convert(bytes).toString();
-      case "SHA-256": return sha256.convert(bytes).toString();
-      case "SHA-512": return sha512.convert(bytes).toString();
-      default: return "";
+      case "MD5":
+        return md5.convert(bytes).toString();
+      case "SHA-1":
+        return sha1.convert(bytes).toString();
+      case "SHA-256":
+        return sha256.convert(bytes).toString();
+      case "SHA-512":
+        return sha512.convert(bytes).toString();
+      default:
+        return "";
     }
   }
 
@@ -47,7 +53,14 @@ class _HashGenDialogState extends State<HashGenDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Hash Generator', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'Hash Generator',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -81,7 +94,7 @@ class _HashGenDialogState extends State<HashGenDialog> {
                   ),
                 ),
                 const SizedBox(width: 12),
-                buildCopyButton(context: context, copyText: _hash)
+                buildCopyButton(context: context, copyText: _hash),
               ],
             ),
           ),
@@ -96,7 +109,9 @@ class _HashGenDialogState extends State<HashGenDialog> {
                 decoration: fieldDecoration('Hash-Algorithm'),
                 dropdownColor: kSurfaceColor,
                 style: TextStyle(color: kTextPrimary, fontSize: 13),
-                items: _algos.map((a) => DropdownMenuItem(value: a, child: Text(a))).toList(),
+                items: _algos
+                    .map((a) => DropdownMenuItem(value: a, child: Text(a)))
+                    .toList(),
                 onChanged: (v) {
                   if (v == null) return;
                   setState(() => _selectedAlgo = v);
@@ -136,10 +151,18 @@ class _HashGenDialogState extends State<HashGenDialog> {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

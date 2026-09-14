@@ -17,6 +17,7 @@ class BarcodeGenDialog extends StatefulWidget {
   @override
   State<BarcodeGenDialog> createState() => _BarcodeGenDialogState();
 }
+
 class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
   final TextEditingController _stringController = TextEditingController();
   String _text = "";
@@ -26,11 +27,11 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
 
   static final Map<String, Barcode> _types = {
     "Code128": Barcode.code128(),
-    "Code39":  Barcode.code39(),
-    "EAN-13":  Barcode.ean13(),
-    "EAN-8":   Barcode.ean8(),
-    "UPC-A":   Barcode.upcA(),
-    "ITF-14":  Barcode.itf14(),
+    "Code39": Barcode.code39(),
+    "EAN-13": Barcode.ean13(),
+    "EAN-8": Barcode.ean8(),
+    "UPC-A": Barcode.upcA(),
+    "ITF-14": Barcode.itf14(),
     "Codabar": Barcode.codabar(),
   };
 
@@ -41,19 +42,29 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
   }
 
   void _generator() {
-    if (_text.trim().isEmpty) {setState(() => _error = null); return;}
+    if (_text.trim().isEmpty) {
+      setState(() => _error = null);
+      return;
+    }
     final barcode = _types[_selectedType]!;
-    try {barcode.verify(_text); setState(() => _error = null);}
-    catch (e) {setState(() => _error = 'Invalid for $_selectedType: $e');}
+    try {
+      barcode.verify(_text);
+      setState(() => _error = null);
+    } catch (e) {
+      setState(() => _error = 'Invalid for $_selectedType: $e');
+    }
   }
 
   Future<Uint8List?> _captureBarcodeBytes() async {
-    final boundary = _barcodeKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+    final boundary =
+        _barcodeKey.currentContext?.findRenderObject()
+            as RenderRepaintBoundary?;
     if (boundary == null) return null;
     final image = await boundary.toImage(pixelRatio: 4);
     final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     return byteData?.buffer.asUint8List();
   }
+
   Future<void> _copyImage() async {
     final bytes = await _captureBarcodeBytes();
     if (bytes == null) return;
@@ -61,7 +72,9 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
     final clipboard = SystemClipboard.instance;
     if (clipboard == null) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Clipboard is not supported here")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Clipboard is not supported here")),
+      );
       return;
     }
 
@@ -70,15 +83,25 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
     await clipboard.write([item]);
 
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Barcode copied")));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text("Barcode copied")));
   }
+
   Future<void> _downloadBarcode() async {
     final bytes = await _captureBarcodeBytes();
     if (bytes == null) return;
 
     if (kIsWeb) {
-      final path = await FilePicker.platform.saveFile(fileName: 'barcode.png', bytes: bytes,);
-      if (path != null && mounted) {ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Saved: $path')));}
+      final path = await FilePicker.platform.saveFile(
+        fileName: 'barcode.png',
+        bytes: bytes,
+      );
+      if (path != null && mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Saved: $path')));
+      }
       return;
     }
 
@@ -88,7 +111,11 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
     final file = File(path.endsWith('.png') ? path : '$path.png');
     await file.writeAsBytes(bytes);
 
-    if (mounted) {ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Saved: ${file.path}')));}
+    if (mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Saved: ${file.path}')));
+    }
   }
 
   @override
@@ -105,7 +132,14 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Barcode Generator', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'Barcode Generator',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -148,7 +182,9 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
                 decoration: fieldDecoration('Barcode-Type'),
                 dropdownColor: kSurfaceColor,
                 style: TextStyle(color: kTextPrimary, fontSize: 13),
-                items: _types.keys.map((t) => DropdownMenuItem(value: t, child: Text(t))).toList(),
+                items: _types.keys
+                    .map((t) => DropdownMenuItem(value: t, child: Text(t)))
+                    .toList(),
                 onChanged: (v) {
                   if (v == null) return;
                   setState(() => _selectedType = v);
@@ -172,24 +208,35 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
             ),
             child: !showBarcode
                 ? Text(
-                _error ?? 'Enter Text …',
-                textAlign: TextAlign.center,
-                style: TextStyle(color:
-                kTextSecondary, fontSize: 12))
+                    _error ?? 'Enter Text …',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: kTextSecondary, fontSize: 12),
+                  )
                 : RepaintBoundary(
-              key: _barcodeKey,
-              child: Container(
-                color: Colors.white,
-                padding: const EdgeInsets.all(8),
-                child: BarcodeWidget(
-                  barcode: barcode,
-                  data: _text,
-                  drawText: true,
-                  style: const TextStyle(fontSize: 12, color: Colors.black),
-                  errorBuilder: (context, error) => Center(child: Text(error, style: const TextStyle(color: Colors.red, fontSize: 11))),
-                ),
-              ),
-            ),
+                    key: _barcodeKey,
+                    child: Container(
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(8),
+                      child: BarcodeWidget(
+                        barcode: barcode,
+                        data: _text,
+                        drawText: true,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                        errorBuilder: (context, error) => Center(
+                          child: Text(
+                            error,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
           ),
           const SizedBox(height: 14),
 
@@ -199,7 +246,12 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
               Expanded(
                 child: OutlinedButton(
                   onPressed: showBarcode ? _copyImage : null,
-                  style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10)),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 10,
+                    ),
+                  ),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Row(
@@ -217,7 +269,12 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
               Expanded(
                 child: OutlinedButton(
                   onPressed: showBarcode ? _downloadBarcode : null,
-                  style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10)),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 10,
+                    ),
+                  ),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Row(
@@ -243,10 +300,18 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

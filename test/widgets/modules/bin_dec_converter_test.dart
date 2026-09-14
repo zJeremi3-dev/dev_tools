@@ -3,7 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:dev_tools/modules/bin_dec_converter.dart';
 
 void main() {
-  Widget wrap() => const MaterialApp(home: Scaffold(body: BinDecConverterDialog()));
+  Widget wrap() =>
+      const MaterialApp(home: Scaffold(body: BinDecConverterDialog()));
 
   testWidgets('converts decimal to binary', (tester) async {
     await tester.pumpWidget(wrap());
@@ -12,7 +13,9 @@ void main() {
     expect(find.text('Binary: 1010'), findsOneWidget);
   });
 
-  testWidgets('converts binary to decimal after switching mode', (tester) async {
+  testWidgets('converts binary to decimal after switching mode', (
+    tester,
+  ) async {
     await tester.pumpWidget(wrap());
     await tester.tap(find.text('Binary to Decimal'));
     await tester.pump();
@@ -30,12 +33,17 @@ void main() {
     await tester.pumpWidget(wrap());
     await tester.tap(find.text('Binary to Decimal'));
     await tester.pump();
-    await tester.enterText(find.byType(TextField), '10102'); // '2' gets filtered out
+    await tester.enterText(
+      find.byType(TextField),
+      '10102',
+    ); // '2' gets filtered out
     await tester.pump();
     expect(find.text('Decimal: 10'), findsOneWidget);
   });
 
-  testWidgets('switching mode swaps input and output correctly', (tester) async {
+  testWidgets('switching mode swaps input and output correctly', (
+    tester,
+  ) async {
     await tester.pumpWidget(wrap());
     await tester.enterText(find.byType(TextField), '5');
     await tester.pump();

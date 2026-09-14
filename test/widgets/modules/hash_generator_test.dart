@@ -17,12 +17,16 @@ void main() {
     expect(find.text('—'), findsOneWidget);
   });
 
-  testWidgets('computes correct SHA-256 for "hello" (default algorithm)', (tester) async {
+  testWidgets('computes correct SHA-256 for "hello" (default algorithm)', (
+    tester,
+  ) async {
     await tester.pumpWidget(wrap());
     await tester.enterText(find.byType(TextField), 'hello');
     await tester.pump();
     expect(
-      find.text('2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824'),
+      find.text(
+        '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824',
+      ),
       findsOneWidget,
     );
   });
@@ -40,7 +44,10 @@ void main() {
     await tester.enterText(find.byType(TextField), 'hello');
     await tester.pump();
     await selectAlgo(tester, 'SHA-1');
-    expect(find.text('aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d'), findsOneWidget);
+    expect(
+      find.text('aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('computes correct SHA-512 for "hello"', (tester) async {
@@ -61,11 +68,15 @@ void main() {
     await tester.pumpWidget(wrap());
     await tester.enterText(find.byType(TextField), 'a');
     await tester.pump();
-    final hashA = tester.widget<SelectableText>(find.byType(SelectableText)).data;
+    final hashA = tester
+        .widget<SelectableText>(find.byType(SelectableText))
+        .data;
 
     await tester.enterText(find.byType(TextField), 'b');
     await tester.pump();
-    final hashB = tester.widget<SelectableText>(find.byType(SelectableText)).data;
+    final hashB = tester
+        .widget<SelectableText>(find.byType(SelectableText))
+        .data;
 
     expect(hashA, isNot(equals(hashB)));
   });

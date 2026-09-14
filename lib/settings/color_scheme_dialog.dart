@@ -18,7 +18,8 @@ class ColorSchemeDialog extends ConsumerWidget {
       ),
       textStyle: TextStyle(color: kTextPrimary),
       child: GestureDetector(
-        onTap: () => ref.read(toolsControllerProvider).setColorScheme(scheme.id),
+        onTap: () =>
+            ref.read(toolsControllerProvider).setColorScheme(scheme.id),
         child: Container(
           width: 38,
           height: 38,
@@ -27,7 +28,9 @@ class ColorSchemeDialog extends ConsumerWidget {
             border: Border.all(width: 2, color: Colors.white70),
             borderRadius: BorderRadius.circular(13),
           ),
-          child: selected == scheme.id ? const Icon(Icons.check_box) : const Text(""),
+          child: selected == scheme.id
+              ? const Icon(Icons.check_box)
+              : const Text(""),
         ),
       ),
     );
@@ -46,7 +49,14 @@ class ColorSchemeDialog extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Color Scheme', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'Color Scheme',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -62,7 +72,9 @@ class ColorSchemeDialog extends ConsumerWidget {
               Wrap(
                 spacing: 15,
                 runSpacing: 15,
-                children: kColorSchemes.map((s) => _colorButton(ref, s, selected)).toList(),
+                children: kColorSchemes
+                    .map((s) => _colorButton(ref, s, selected))
+                    .toList(),
               ),
             ],
           ),
@@ -74,10 +86,18 @@ class ColorSchemeDialog extends ConsumerWidget {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

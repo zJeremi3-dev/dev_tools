@@ -18,44 +18,65 @@ class MyHomePage extends ConsumerStatefulWidget {
 }
 
 class _MyHomePageState extends ConsumerState<MyHomePage> {
-
   @override
   void initState() {
     super.initState();
     _waitForInitialLoad();
   }
 
-  Future<void> _waitForInitialLoad() async{
+  Future<void> _waitForInitialLoad() async {
     await Future.wait([
       ref.read(initialLoadProvider.future),
-      Future.delayed(const Duration(milliseconds: 2300))
+      Future.delayed(const Duration(milliseconds: 2300)),
     ]);
     FlutterNativeSplash.remove();
   }
 
-  Future<void> _showToolContextMenu(BuildContext context, Offset position, ToolModule module) async {
+  Future<void> _showToolContextMenu(
+    BuildContext context,
+    Offset position,
+    ToolModule module,
+  ) async {
     final controller = ref.read(toolsControllerProvider);
     final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
     final selected = await showMenu<int>(
       context: context,
       color: kSurfaceColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(color: kAccent.withAlpha(50))),
-      position: RelativeRect.fromRect(Rect.fromLTWH(position.dx, position.dy, 0, 0), Offset.zero & overlay.size),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: kAccent.withAlpha(50)),
+      ),
+      position: RelativeRect.fromRect(
+        Rect.fromLTWH(position.dx, position.dy, 0, 0),
+        Offset.zero & overlay.size,
+      ),
       items: [
         PopupMenuItem<int>(
           value: 1,
           child: Row(
             children: [
-              Icon(controller.hideOrder.contains(module.id) ? Icons.visibility_off : Icons.visibility, size: 18, color: const Color(0xFF94A3B8)),
+              Icon(
+                controller.hideOrder.contains(module.id)
+                    ? Icons.visibility_off
+                    : Icons.visibility,
+                size: 18,
+                color: const Color(0xFF94A3B8),
+              ),
               const SizedBox(width: 10),
-              Text(controller.hideOrder.contains(module.id) ? "Show" : "Hide", style: TextStyle(color: kTextPrimary, fontSize: 13)),
+              Text(
+                controller.hideOrder.contains(module.id) ? "Show" : "Hide",
+                style: TextStyle(color: kTextPrimary, fontSize: 13),
+              ),
             ],
           ),
         ),
       ],
     );
-    if (selected == 1) {controller.toggleHide(module.id);}
+    if (selected == 1) {
+      controller.toggleHide(module.id);
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -64,7 +85,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     final favoriteTools = controller.favoriteTools;
     final nonFavoriteTools = controller.nonFavoriteTools;
     final moduleLayout = controller.moduleLayout;
-
 
     return Scaffold(
       appBar: AppBar(
@@ -78,11 +98,17 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               child: SearchBar(
                 leading: Icon(Icons.search, color: kTextSecondary, size: 18),
                 hintText: "Search",
-                hintStyle: WidgetStateProperty.all(TextStyle(color: kTextSecondary, fontSize: 13)),
-                textStyle: WidgetStateProperty.all(TextStyle(color: kTextPrimary, fontSize: 13)),
+                hintStyle: WidgetStateProperty.all(
+                  TextStyle(color: kTextSecondary, fontSize: 13),
+                ),
+                textStyle: WidgetStateProperty.all(
+                  TextStyle(color: kTextPrimary, fontSize: 13),
+                ),
                 backgroundColor: WidgetStateProperty.all(kBgColor),
                 elevation: WidgetStateProperty.all(0),
-                padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 12)),
+                padding: WidgetStateProperty.all(
+                  const EdgeInsets.symmetric(horizontal: 12),
+                ),
                 constraints: const BoxConstraints(minHeight: 40, maxHeight: 40),
                 shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(
@@ -101,17 +127,33 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                 initialValue: controller.selectedCategory,
                 isExpanded: true,
                 isDense: true,
-                icon: Icon(Icons.keyboard_arrow_down, color: kTextSecondary, size: 18),
+                icon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: kTextSecondary,
+                  size: 18,
+                ),
                 decoration: InputDecoration(
                   hintText: 'Category',
                   hintStyle: TextStyle(color: kTextSecondary, fontSize: 13),
                   filled: true,
                   fillColor: kBgColor,
                   isCollapsed: true,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: kAccent.withAlpha(50))),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: kAccent.withAlpha(50))),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: kAccent.withAlpha(50))),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 11,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: kAccent.withAlpha(50)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: kAccent.withAlpha(50)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: kAccent.withAlpha(50)),
+                  ),
                 ),
                 dropdownColor: kSurfaceColor,
                 style: TextStyle(color: kTextPrimary, fontSize: 13),
@@ -120,9 +162,12 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                     value: null,
                     child: Text('All Categories'),
                   ),
-                  ...controller.categories.asMap().entries.map((entry) => DropdownMenuItem<int>(
-                    value: entry.key, child: Text(entry.value),
-                  )),
+                  ...controller.categories.asMap().entries.map(
+                    (entry) => DropdownMenuItem<int>(
+                      value: entry.key,
+                      child: Text(entry.value),
+                    ),
+                  ),
                 ],
                 onChanged: controller.setSelectedCategory,
               ),
@@ -160,92 +205,159 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         ],
       ),
       body: controller.filteredTools.isEmpty
-          ? Center(child: Text('No matches for "${controller.searchQuery}"', style: TextStyle(color: kTextSecondary, fontSize: 14)))
+          ? Center(
+              child: Text(
+                'No matches for "${controller.searchQuery}"',
+                style: TextStyle(color: kTextSecondary, fontSize: 14),
+              ),
+            )
           : SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (favoriteTools.isNotEmpty && moduleLayout != 3) ...[
-              Padding(
-                padding: const EdgeInsets.only(left: 12, top: 8),
-                child: Text("Favorites", style: TextStyle(color: kTextSecondary, fontSize: 12, fontWeight: FontWeight.w600)),
-              ),
-              _buildGrid(width: width, tools: favoriteTools, onReorder: controller.reorderFavorites),
-              const SizedBox(height: 12),
-            ],
-            if (moduleLayout == 1) ...[
-              Padding(
-                padding: const EdgeInsets.only(left: 12, top: 8),
-                child: Text("All Tools", style: TextStyle(color: kTextSecondary, fontSize: 12, fontWeight: FontWeight.w600)),
-              ),
-              _buildGrid(width: width, tools: nonFavoriteTools, onReorder: controller.reorder),
-            ],
-            if (moduleLayout == 2) ...[
-              for (final category in controller.categories)
-                if (nonFavoriteTools.any((t) => t.category == category)) ...[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12, top: 8),
-                    child: Text(category, style: TextStyle(color: kTextSecondary, fontSize: 12, fontWeight: FontWeight.w600)),
-                  ),
-                  _buildGrid(
-                    width: width,
-                    tools: nonFavoriteTools.where((t) => t.category == category).toList(),
-                    onReorder: (a, b) => controller.reorderCategory(category, a, b),
-                  ),
-                ],
-            ],
-            if (moduleLayout == 3) ...[
-              Padding(
-                padding: const EdgeInsets.only(left: 12, top: 8),
-                child: Text("All Tools", style: TextStyle(color: kTextSecondary, fontSize: 12, fontWeight: FontWeight.w600)),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
-                  children: [
-                    if (favoriteTools.isNotEmpty)
-                      CategoryDropdownColumn(
-                        category: "Favorites",
-                        items: favoriteTools.map((t) => buildTabularToolRow(
-                          icon: t.icon,
-                          name: t.name,
-                          isFavorite: controller.favoriteOrder.contains(t.id),
-                          onTap: () => showDialog(
-                            context: context,
-                            builder: t.dialogBuilder,
-                            useRootNavigator: true,
-                          ),
-                          onToggleFavorite: () => controller.toggleFavorite(t.id),
-                          onSecondaryTapDown: (pos) => _showToolContextMenu(context, pos, t),
-                        )).toList(),
-                      ),
-                    for (final category in controller.categories)
-                      if (nonFavoriteTools.any((t) => t.category == category))
-                        CategoryDropdownColumn(
-                          category: category,
-                          items: nonFavoriteTools.where((t) => t.category == category).map((t) => buildTabularToolRow(
-                            icon: t.icon,
-                            name: t.name,
-                            isFavorite: controller.favoriteOrder.contains(t.id),
-                            onTap: () => showDialog(
-                              context: context,
-                              builder: t.dialogBuilder,
-                              useRootNavigator: true,
-                            ),
-                            onToggleFavorite: () => controller.toggleFavorite(t.id),
-                            onSecondaryTapDown: (pos) => _showToolContextMenu(context, pos, t),
-                          )).toList(),
-                          initiallyExpanded: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (favoriteTools.isNotEmpty && moduleLayout != 3) ...[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12, top: 8),
+                      child: Text(
+                        "Favorites",
+                        style: TextStyle(
+                          color: kTextSecondary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
                         ),
+                      ),
+                    ),
+                    _buildGrid(
+                      width: width,
+                      tools: favoriteTools,
+                      onReorder: controller.reorderFavorites,
+                    ),
+                    const SizedBox(height: 12),
                   ],
-                ),
+                  if (moduleLayout == 1) ...[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12, top: 8),
+                      child: Text(
+                        "All Tools",
+                        style: TextStyle(
+                          color: kTextSecondary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    _buildGrid(
+                      width: width,
+                      tools: nonFavoriteTools,
+                      onReorder: controller.reorder,
+                    ),
+                  ],
+                  if (moduleLayout == 2) ...[
+                    for (final category in controller.categories)
+                      if (nonFavoriteTools.any(
+                        (t) => t.category == category,
+                      )) ...[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12, top: 8),
+                          child: Text(
+                            category,
+                            style: TextStyle(
+                              color: kTextSecondary,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        _buildGrid(
+                          width: width,
+                          tools: nonFavoriteTools
+                              .where((t) => t.category == category)
+                              .toList(),
+                          onReorder: (a, b) =>
+                              controller.reorderCategory(category, a, b),
+                        ),
+                      ],
+                  ],
+                  if (moduleLayout == 3) ...[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12, top: 8),
+                      child: Text(
+                        "All Tools",
+                        style: TextStyle(
+                          color: kTextSecondary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: [
+                          if (favoriteTools.isNotEmpty)
+                            CategoryDropdownColumn(
+                              category: "Favorites",
+                              items: favoriteTools
+                                  .map(
+                                    (t) => buildTabularToolRow(
+                                      icon: t.icon,
+                                      name: t.name,
+                                      isFavorite: controller.favoriteOrder
+                                          .contains(t.id),
+                                      onTap: () => showDialog(
+                                        context: context,
+                                        builder: t.dialogBuilder,
+                                        useRootNavigator: true,
+                                      ),
+                                      onToggleFavorite: () =>
+                                          controller.toggleFavorite(t.id),
+                                      onSecondaryTapDown: (pos) =>
+                                          _showToolContextMenu(context, pos, t),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          for (final category in controller.categories)
+                            if (nonFavoriteTools.any(
+                              (t) => t.category == category,
+                            ))
+                              CategoryDropdownColumn(
+                                category: category,
+                                items: nonFavoriteTools
+                                    .where((t) => t.category == category)
+                                    .map(
+                                      (t) => buildTabularToolRow(
+                                        icon: t.icon,
+                                        name: t.name,
+                                        isFavorite: controller.favoriteOrder
+                                            .contains(t.id),
+                                        onTap: () => showDialog(
+                                          context: context,
+                                          builder: t.dialogBuilder,
+                                          useRootNavigator: true,
+                                        ),
+                                        onToggleFavorite: () =>
+                                            controller.toggleFavorite(t.id),
+                                        onSecondaryTapDown: (pos) =>
+                                            _showToolContextMenu(
+                                              context,
+                                              pos,
+                                              t,
+                                            ),
+                                      ),
+                                    )
+                                    .toList(),
+                                initiallyExpanded: false,
+                              ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ],
               ),
-            ],
-          ],
-        ),
-      ),
+            ),
     );
   }
 
@@ -262,7 +374,11 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     return 10;
   }
 
-  Widget _buildGrid({required double width, required List<ToolModule> tools, required void Function(int, int) onReorder}) {
+  Widget _buildGrid({
+    required double width,
+    required List<ToolModule> tools,
+    required void Function(int, int) onReorder,
+  }) {
     final controller = ref.read(toolsControllerProvider);
     return ReorderableGridView.builder(
       shrinkWrap: true,
@@ -279,7 +395,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         module: tools[index],
         isFavorite: controller.favoriteOrder.contains(tools[index].id),
         onToggleFavorite: () => controller.toggleFavorite(tools[index].id),
-        onSecondaryTapDown: (position) => _showToolContextMenu(context, position, tools[index]),
+        onSecondaryTapDown: (position) =>
+            _showToolContextMenu(context, position, tools[index]),
       ),
       onReorder: controller.isSearching ? (a, b) {} : onReorder,
       dragStartDelay: const Duration(milliseconds: 150),

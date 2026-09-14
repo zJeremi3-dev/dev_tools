@@ -9,18 +9,40 @@ class UrlEncodeDialog extends StatefulWidget {
   @override
   State<UrlEncodeDialog> createState() => _UrlEncodeDialogState();
 }
+
 class _UrlEncodeDialogState extends State<UrlEncodeDialog> {
   final _inputController = TextEditingController();
-  String _input = ""; int _mode = 0;
-  String? _output; String? _error;
+  String _input = "";
+  int _mode = 0;
+  String? _output;
+  String? _error;
 
   void convert() {
-    if (_input.isEmpty) {setState(() { _output = null; _error = null; }); return;}
-    try {
-      if (_mode == 0) {setState(() { _output = Uri.encodeComponent(_input); _error = null;});}
-      else {setState(() { _output = Uri.decodeComponent(_input); _error = null; });}
+    if (_input.isEmpty) {
+      setState(() {
+        _output = null;
+        _error = null;
+      });
+      return;
     }
-    catch (e) {setState(() {_output = null;_error = 'Invalid input: not a validly encoded URL string.';});}
+    try {
+      if (_mode == 0) {
+        setState(() {
+          _output = Uri.encodeComponent(_input);
+          _error = null;
+        });
+      } else {
+        setState(() {
+          _output = Uri.decodeComponent(_input);
+          _error = null;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _output = null;
+        _error = 'Invalid input: not a validly encoded URL string.';
+      });
+    }
   }
 
   @override
@@ -40,7 +62,14 @@ class _UrlEncodeDialogState extends State<UrlEncodeDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('URL Encoder', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'URL Encoder',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -53,18 +82,18 @@ class _UrlEncodeDialogState extends State<UrlEncodeDialog> {
 
           // Mode
           buildSegmentedToggle(
-              groupValue: _mode,
-              labels: ["Encode","Decode"],
-              onChanged: (value) {
-                setState(() => _mode = value);
-                if (_input.isEmpty || _output == null) return;
-                final previousInput = _input;
-                setState(() {
-                  _input = _output!;
-                  _inputController.text = _output!;
-                  _output = previousInput;
-                });
-              }
+            groupValue: _mode,
+            labels: ["Encode", "Decode"],
+            onChanged: (value) {
+              setState(() => _mode = value);
+              if (_input.isEmpty || _output == null) return;
+              final previousInput = _input;
+              setState(() {
+                _input = _output!;
+                _inputController.text = _output!;
+                _output = previousInput;
+              });
+            },
           ),
           const SizedBox(height: 16),
 
@@ -91,7 +120,7 @@ class _UrlEncodeDialogState extends State<UrlEncodeDialog> {
                   ),
                 ),
                 const SizedBox(width: 12),
-                buildCopyButton(context: context, copyText: _output ?? "")
+                buildCopyButton(context: context, copyText: _output ?? ""),
               ],
             ),
           ),
@@ -132,10 +161,18 @@ class _UrlEncodeDialogState extends State<UrlEncodeDialog> {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

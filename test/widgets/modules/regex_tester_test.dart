@@ -13,7 +13,9 @@ void main() {
     expect(find.text('2 matches'), findsOneWidget);
   });
 
-  testWidgets('invalid regex shows an error instead of crashing', (tester) async {
+  testWidgets('invalid regex shows an error instead of crashing', (
+    tester,
+  ) async {
     await tester.pumpWidget(wrap());
     await tester.enterText(find.byType(TextField).first, '(');
     await tester.pump();

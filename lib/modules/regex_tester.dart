@@ -9,6 +9,7 @@ class RegexTesterDialog extends StatefulWidget {
   @override
   State<RegexTesterDialog> createState() => _RegexTesterDialogState();
 }
+
 class _RegexTesterDialogState extends State<RegexTesterDialog> {
   final _patternController = TextEditingController();
   final _testController = TextEditingController();
@@ -24,14 +25,28 @@ class _RegexTesterDialogState extends State<RegexTesterDialog> {
     final pattern = _patternController.text;
     final input = _testController.text;
     if (pattern.isEmpty) {
-      setState(() { _matches = []; _error = null; });
+      setState(() {
+        _matches = [];
+        _error = null;
+      });
       return;
     }
     try {
-      final regex = RegExp(pattern, caseSensitive: !_ignoreCase, multiLine: _multiLine, dotAll: _dotAll);
-      setState(() { _matches = regex.allMatches(input).toList(); _error = null; });
+      final regex = RegExp(
+        pattern,
+        caseSensitive: !_ignoreCase,
+        multiLine: _multiLine,
+        dotAll: _dotAll,
+      );
+      setState(() {
+        _matches = regex.allMatches(input).toList();
+        _error = null;
+      });
     } catch (e) {
-      setState(() { _matches = []; _error = 'Invalid regex: ${e.toString()}'; });
+      setState(() {
+        _matches = [];
+        _error = 'Invalid regex: ${e.toString()}';
+      });
     }
   }
 
@@ -45,22 +60,43 @@ class _RegexTesterDialogState extends State<RegexTesterDialog> {
   List<TextSpan> _buildHighlighted() {
     final input = _testController.text;
     if (_matches.isEmpty || input.isEmpty) {
-      return [TextSpan(text: input.isEmpty ? '—' : input, style: TextStyle(color: kTextPrimary))];
+      return [
+        TextSpan(
+          text: input.isEmpty ? '—' : input,
+          style: TextStyle(color: kTextPrimary),
+        ),
+      ];
     }
     final spans = <TextSpan>[];
     int last = 0;
     for (final m in _matches) {
       if (m.start > last) {
-        spans.add(TextSpan(text: input.substring(last, m.start), style: TextStyle(color: kTextPrimary)));
+        spans.add(
+          TextSpan(
+            text: input.substring(last, m.start),
+            style: TextStyle(color: kTextPrimary),
+          ),
+        );
       }
-      spans.add(TextSpan(
-        text: input.substring(m.start, m.end),
-        style: TextStyle(color: kBgColor, backgroundColor: kAccentLight, fontWeight: FontWeight.w700),
-      ));
+      spans.add(
+        TextSpan(
+          text: input.substring(m.start, m.end),
+          style: TextStyle(
+            color: kBgColor,
+            backgroundColor: kAccentLight,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      );
       last = m.end;
     }
     if (last < input.length) {
-      spans.add(TextSpan(text: input.substring(last), style: TextStyle(color: kTextPrimary)));
+      spans.add(
+        TextSpan(
+          text: input.substring(last),
+          style: TextStyle(color: kTextPrimary),
+        ),
+      );
     }
     return spans;
   }
@@ -76,7 +112,14 @@ class _RegexTesterDialogState extends State<RegexTesterDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Regex Tester', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'Regex Tester',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -95,7 +138,11 @@ class _RegexTesterDialogState extends State<RegexTesterDialog> {
                 controller: _patternController,
                 autofocus: true,
                 decoration: fieldDecoration('z. B. ^[A-Za-z0-9]+\$'),
-                style: TextStyle(color: kTextPrimary, fontSize: 13, fontFamily: 'monospace'),
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 13,
+                  fontFamily: 'monospace',
+                ),
                 onChanged: (_) => _test(),
               ),
               const SizedBox(height: 10),
@@ -103,9 +150,18 @@ class _RegexTesterDialogState extends State<RegexTesterDialog> {
                 spacing: 12,
                 runSpacing: 6,
                 children: [
-                  buildCheckboxOption('Ignore case', _ignoreCase, () { setState(() => _ignoreCase = !_ignoreCase); _test(); }),
-                  buildCheckboxOption('Multiline', _multiLine, () { setState(() => _multiLine = !_multiLine); _test(); }),
-                  buildCheckboxOption('Dot matches all', _dotAll, () { setState(() => _dotAll = !_dotAll); _test(); }),
+                  buildCheckboxOption('Ignore case', _ignoreCase, () {
+                    setState(() => _ignoreCase = !_ignoreCase);
+                    _test();
+                  }),
+                  buildCheckboxOption('Multiline', _multiLine, () {
+                    setState(() => _multiLine = !_multiLine);
+                    _test();
+                  }),
+                  buildCheckboxOption('Dot matches all', _dotAll, () {
+                    setState(() => _dotAll = !_dotAll);
+                    _test();
+                  }),
                 ],
               ),
             ],
@@ -121,7 +177,11 @@ class _RegexTesterDialogState extends State<RegexTesterDialog> {
                 maxLines: 5,
                 minLines: 3,
                 decoration: fieldDecoration(''),
-                style: TextStyle(color: kTextPrimary, fontSize: 13, fontFamily: 'monospace'),
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 13,
+                  fontFamily: 'monospace',
+                ),
                 onChanged: (_) => _test(),
               ),
             ],
@@ -140,8 +200,16 @@ class _RegexTesterDialogState extends State<RegexTesterDialog> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             child: SingleChildScrollView(
               child: _error != null
-                  ? Text(_error!, style: TextStyle(color: Colors.redAccent, fontSize: 13))
-                  : RichText(text: TextSpan(style: TextStyle(fontSize: 13, fontFamily: 'monospace'), children: _buildHighlighted())),
+                  ? Text(
+                      _error!,
+                      style: TextStyle(color: Colors.redAccent, fontSize: 13),
+                    )
+                  : RichText(
+                      text: TextSpan(
+                        style: TextStyle(fontSize: 13, fontFamily: 'monospace'),
+                        children: _buildHighlighted(),
+                      ),
+                    ),
             ),
           ),
           const SizedBox(height: 8),
@@ -159,10 +227,18 @@ class _RegexTesterDialogState extends State<RegexTesterDialog> {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

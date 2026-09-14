@@ -10,6 +10,7 @@ class JsonFormatDialog extends StatefulWidget {
   @override
   State<JsonFormatDialog> createState() => _JsonFormatDialogState();
 }
+
 class _JsonFormatDialogState extends State<JsonFormatDialog> {
   final _inputController = TextEditingController();
   String _input = "";
@@ -18,15 +19,32 @@ class _JsonFormatDialogState extends State<JsonFormatDialog> {
   String? _error;
 
   void convert() {
-    if (_input.trim().isEmpty) {setState(() { _output = null; _error = null; }); return;}
+    if (_input.trim().isEmpty) {
+      setState(() {
+        _output = null;
+        _error = null;
+      });
+      return;
+    }
     try {
       final decoded = jsonDecode(_input);
       if (_mode == 0) {
-        setState(() {_output = const JsonEncoder.withIndent('  ').convert(decoded); _error = null;});
+        setState(() {
+          _output = const JsonEncoder.withIndent('  ').convert(decoded);
+          _error = null;
+        });
+      } else {
+        setState(() {
+          _output = jsonEncode(decoded);
+          _error = null;
+        });
       }
-      else {setState(() {_output = jsonEncode(decoded);_error = null;});}
+    } catch (e) {
+      setState(() {
+        _output = null;
+        _error = 'Invalid JSON: ${e.toString()}';
+      });
     }
-    catch (e) {setState(() {_output = null;_error = 'Invalid JSON: ${e.toString()}';});}
   }
 
   @override
@@ -46,7 +64,14 @@ class _JsonFormatDialogState extends State<JsonFormatDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('JSON Formatter', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'JSON Formatter',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -59,18 +84,19 @@ class _JsonFormatDialogState extends State<JsonFormatDialog> {
 
           // Mode
           buildSegmentedToggle(
-              groupValue: _mode,
-              labels: ["Format","Minify"],
-              onChanged: (value) {
-                String input2 = "";
-                setState(() => _mode = value);
-                if (_input.isEmpty) return;
-                setState(() {
-                  input2 = _input;
-                  _input = _output!; _inputController.text = _output!;
-                  _output = input2;
-                });
-              }
+            groupValue: _mode,
+            labels: ["Format", "Minify"],
+            onChanged: (value) {
+              String input2 = "";
+              setState(() => _mode = value);
+              if (_input.isEmpty) return;
+              setState(() {
+                input2 = _input;
+                _input = _output!;
+                _inputController.text = _output!;
+                _output = input2;
+              });
+            },
           ),
           const SizedBox(height: 16),
 
@@ -84,7 +110,11 @@ class _JsonFormatDialogState extends State<JsonFormatDialog> {
                 maxLines: 6,
                 minLines: 3,
                 decoration: fieldDecoration(''),
-                style: TextStyle(color: kTextPrimary, fontSize: 13, fontFamily: 'monospace'),
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 13,
+                  fontFamily: 'monospace',
+                ),
                 onChanged: (value) {
                   setState(() => _input = value);
                   convert();
@@ -126,7 +156,7 @@ class _JsonFormatDialogState extends State<JsonFormatDialog> {
                   ),
                 ),
                 const SizedBox(width: 12),
-                buildCopyButton(context: context, copyText: _output ?? "")
+                buildCopyButton(context: context, copyText: _output ?? ""),
               ],
             ),
           ),
@@ -140,10 +170,18 @@ class _JsonFormatDialogState extends State<JsonFormatDialog> {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

@@ -5,18 +5,12 @@ class ResponsiveDialog extends StatelessWidget {
   final Widget child;
   final double maxWidth;
 
-  const ResponsiveDialog({
-    super.key,
-    required this.child,
-    this.maxWidth = 480,
-  });
+  const ResponsiveDialog({super.key, required this.child, this.maxWidth = 480});
 
   @override
   Widget build(BuildContext context) {
     final screen = MediaQuery.of(context).size;
-    final width = screen.width < maxWidth + 32
-        ? screen.width * 0.92
-        : maxWidth;
+    final width = screen.width < maxWidth + 32 ? screen.width * 0.92 : maxWidth;
     final height = screen.height * 0.85;
 
     return Dialog(

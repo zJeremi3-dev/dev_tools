@@ -23,41 +23,44 @@ class MyApp extends ConsumerWidget {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: kBgColor,
         colorScheme: ColorScheme.dark(
-          surface:   kSurfaceColor,
-          primary:   kAccent,
+          surface: kSurfaceColor,
+          primary: kAccent,
           secondary: kAccentLight,
         ),
         cardTheme: CardThemeData(
-          color:     kSurfaceColor,
+          color: kSurfaceColor,
           elevation: 4,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         checkboxTheme: CheckboxThemeData(
           fillColor: WidgetStateProperty.resolveWith(
-                (s) => s.contains(WidgetState.selected) ? kAccent : Colors.transparent,
+            (s) =>
+                s.contains(WidgetState.selected) ? kAccent : Colors.transparent,
           ),
           side: BorderSide(color: kTextSecondary, width: 1.5),
         ),
         sliderTheme: SliderThemeData(
-          activeTrackColor:   kAccent,
+          activeTrackColor: kAccent,
           inactiveTrackColor: kAccent.withAlpha(60),
-          thumbColor:         kAccentLight,
-          overlayColor:       kAccent.withAlpha(30),
-          trackHeight:        3,
+          thumbColor: kAccentLight,
+          overlayColor: kAccent.withAlpha(30),
+          trackHeight: 3,
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: kBgColor,
-          elevation:       0,
-          titleTextStyle:  TextStyle(
-            color:         kTextPrimary,
-            fontSize:      20,
-            fontWeight:    FontWeight.w700,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+            color: kTextPrimary,
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
             letterSpacing: 1.2,
           ),
           iconTheme: IconThemeData(color: kAccentLight),
         ),
       ),
-      home: const MyHomePage(title: "Dev-Tools",),
+      home: const MyHomePage(title: "Dev-Tools"),
     );
   }
 }

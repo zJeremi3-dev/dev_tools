@@ -10,6 +10,7 @@ class Base64Dialog extends StatefulWidget {
   @override
   State<Base64Dialog> createState() => _Base64DialogState();
 }
+
 class _Base64DialogState extends State<Base64Dialog> {
   final _inputController = TextEditingController();
   String _input = "";
@@ -18,7 +19,13 @@ class _Base64DialogState extends State<Base64Dialog> {
   String? _error;
 
   void convert() {
-    if (_input.isEmpty) {setState(() { _output = null; _error = null; });return;}
+    if (_input.isEmpty) {
+      setState(() {
+        _output = null;
+        _error = null;
+      });
+      return;
+    }
     try {
       if (_mode == 0) {
         setState(() {
@@ -56,7 +63,14 @@ class _Base64DialogState extends State<Base64Dialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Base64', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'Base64',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -69,18 +83,18 @@ class _Base64DialogState extends State<Base64Dialog> {
 
           // Mode
           buildSegmentedToggle(
-              groupValue: _mode,
-              labels: ["Encode","Decode"],
-              onChanged: (value) {
-                setState(() => _mode = value);
-                if (_input.isEmpty || _output == null) return;
-                final previousInput = _input;
-                setState(() {
-                  _input = _output!;
-                  _inputController.text = _output!;
-                  _output = previousInput;
-                });
-              }
+            groupValue: _mode,
+            labels: ["Encode", "Decode"],
+            onChanged: (value) {
+              setState(() => _mode = value);
+              if (_input.isEmpty || _output == null) return;
+              final previousInput = _input;
+              setState(() {
+                _input = _output!;
+                _inputController.text = _output!;
+                _output = previousInput;
+              });
+            },
           ),
           const SizedBox(height: 16),
 
@@ -107,7 +121,7 @@ class _Base64DialogState extends State<Base64Dialog> {
                   ),
                 ),
                 const SizedBox(width: 12),
-                buildCopyButton(context: context, copyText: _output ?? "")
+                buildCopyButton(context: context, copyText: _output ?? ""),
               ],
             ),
           ),
@@ -148,10 +162,18 @@ class _Base64DialogState extends State<Base64Dialog> {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

@@ -11,19 +11,26 @@ class PasswordGenDialog extends StatefulWidget {
   @override
   State<PasswordGenDialog> createState() => _PasswordGenDialogState();
 }
+
 class _PasswordGenDialogState extends State<PasswordGenDialog> {
   final lengthController = TextEditingController(text: '16');
   final numberController = TextEditingController();
   final symbolsController = TextEditingController();
-  int _length = 16; int _minNum = 1; int _minSym = 0;
-  bool _includeUpper = true; bool _includeLower = true; bool _includeDigits = true; bool _includeSymbols = false;
+  int _length = 16;
+  int _minNum = 1;
+  int _minSym = 0;
+  bool _includeUpper = true;
+  bool _includeLower = true;
+  bool _includeDigits = true;
+  bool _includeSymbols = false;
   String pw = "";
   final String _upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   final String _lowerChars = "abcdefghijklmnopqrstuvwxyz";
   final String _digitChars = "0123456789";
   final String _symbolChars = "!@#\$%^&*";
   String _charPool = "";
-  String _guaranteedChars = ""; int chars = 0;
+  String _guaranteedChars = "";
+  int chars = 0;
   int _get = 0;
   @override
   void dispose() {
@@ -34,7 +41,13 @@ class _PasswordGenDialogState extends State<PasswordGenDialog> {
   }
 
   void generator() {
-    setState(() {pw = ""; _charPool = ""; _guaranteedChars = ""; _get = 0; chars = 0;});
+    setState(() {
+      pw = "";
+      _charPool = "";
+      _guaranteedChars = "";
+      _get = 0;
+      chars = 0;
+    });
     // _charPool & _guaranteedChars definition
     if (_includeUpper) {
       setState(() {
@@ -63,15 +76,21 @@ class _PasswordGenDialogState extends State<PasswordGenDialog> {
       setState(() {
         _charPool += _symbolChars;
         for (int i = 0; i < _minSym; i++) {
-          _guaranteedChars += _symbolChars[Random().nextInt(_symbolChars.length)];
+          _guaranteedChars +=
+              _symbolChars[Random().nextInt(_symbolChars.length)];
           chars++;
         }
       });
     }
 
-    if (int.tryParse(lengthController.text)! < chars) {setState(() {_length = chars; lengthController.text = "$chars";});}
+    if (int.tryParse(lengthController.text)! < chars) {
+      setState(() {
+        _length = chars;
+        lengthController.text = "$chars";
+      });
+    }
 
-    while (_get != (_length-chars)) {
+    while (_get != (_length - chars)) {
       setState(() {
         pw += _charPool[Random().nextInt(_charPool.length)];
         _get++;
@@ -95,7 +114,14 @@ class _PasswordGenDialogState extends State<PasswordGenDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Generator', style: TextStyle(color: kTextPrimary, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text(
+                'Generator',
+                style: TextStyle(
+                  color: kTextPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               IconButton(
                 icon: Icon(Icons.close, color: kTextSecondary, size: 20),
                 onPressed: () => Navigator.pop(context),
@@ -117,35 +143,60 @@ class _PasswordGenDialogState extends State<PasswordGenDialog> {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(pw, style: TextStyle(color: kTextPrimary, fontSize: 15, letterSpacing: 2, fontFamily: 'monospace'),),
+                  child: Text(
+                    pw,
+                    style: TextStyle(
+                      color: kTextPrimary,
+                      fontSize: 15,
+                      letterSpacing: 2,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
                 ),
                 Tooltip(
                   message: "Generate",
                   decoration: BoxDecoration(
-                      color: kSurfaceColor,
-                      border: Border.all(width: 1, color: kAccent),
-                      borderRadius: BorderRadius.circular(5)
+                    color: kSurfaceColor,
+                    border: Border.all(width: 1, color: kAccent),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   textStyle: TextStyle(color: kTextPrimary),
                   child: IconButton(
-                      onPressed: () {generator();},
-                      icon: pw == "" ? Icon(Icons.play_arrow) : Icon(Icons.refresh_rounded),
-                      color: kAccentLight,
-                      iconSize: 22,
-                      style: ButtonStyle(shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))),
-                      constraints: BoxConstraints(minWidth: 32, minHeight: 32),
-                      padding: EdgeInsets.zero
+                    onPressed: () {
+                      generator();
+                    },
+                    icon: pw == ""
+                        ? Icon(Icons.play_arrow)
+                        : Icon(Icons.refresh_rounded),
+                    color: kAccentLight,
+                    iconSize: 22,
+                    style: ButtonStyle(
+                      shape: WidgetStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    constraints: BoxConstraints(minWidth: 32, minHeight: 32),
+                    padding: EdgeInsets.zero,
                   ),
                 ),
                 const SizedBox(width: 12),
-                buildCopyButton(context: context, copyText: pw)
+                buildCopyButton(context: context, copyText: pw),
               ],
             ),
           ),
           const SizedBox(height: 14),
 
           // Options-Label
-          Text('Options', style: TextStyle(color: kTextSecondary, fontSize: 12, letterSpacing: 0.8)),
+          Text(
+            'Options',
+            style: TextStyle(
+              color: kTextSecondary,
+              fontSize: 12,
+              letterSpacing: 0.8,
+            ),
+          ),
           const SizedBox(height: 8),
 
           // Length
@@ -182,7 +233,10 @@ class _PasswordGenDialogState extends State<PasswordGenDialog> {
                 },
               ),
               const SizedBox(height: 6),
-              Text('Please enter a value up to 128.', style: TextStyle(color: kTextSecondary, fontSize: 11)),
+              Text(
+                'Please enter a value up to 128.',
+                style: TextStyle(color: kTextSecondary, fontSize: 11),
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -195,8 +249,16 @@ class _PasswordGenDialogState extends State<PasswordGenDialog> {
                 spacing: 20,
                 runSpacing: 8,
                 children: [
-                  buildCheckboxOption('A-Z', _includeUpper, () => setState(() => _includeUpper = !_includeUpper)),
-                  buildCheckboxOption('a-z', _includeLower, () => setState(() => _includeLower = !_includeLower)),
+                  buildCheckboxOption(
+                    'A-Z',
+                    _includeUpper,
+                    () => setState(() => _includeUpper = !_includeUpper),
+                  ),
+                  buildCheckboxOption(
+                    'a-z',
+                    _includeLower,
+                    () => setState(() => _includeLower = !_includeLower),
+                  ),
                   buildCheckboxOption('0-9', _includeDigits, () {
                     setState(() {
                       _includeDigits ? _minNum = 0 : _minNum = 1;
@@ -228,15 +290,29 @@ class _PasswordGenDialogState extends State<PasswordGenDialog> {
                         TextInputFormatter.withFunction((oldValue, newValue) {
                           if (newValue.text.isEmpty) return newValue;
                           final val = int.tryParse(newValue.text);
-                          if (val == null || val > (_length - (_minSym + (_includeUpper ? 1 : 0) + (_includeLower ? 1 : 0)))) return oldValue;
+                          if (val == null ||
+                              val >
+                                  (_length -
+                                      (_minSym +
+                                          (_includeUpper ? 1 : 0) +
+                                          (_includeLower ? 1 : 0)))) {
+                            return oldValue;
+                          }
                           return newValue;
                         }),
                       ],
                       onChanged: (value) {
                         final parsed = int.tryParse(value);
                         if (parsed != null) setState(() => _minNum = parsed);
-                        if (parsed == 0) setState(() {_minNum = 0; _includeDigits = false;});
-                        if (parsed != null && parsed > 0) setState(() => _includeDigits = true);
+                        if (parsed == 0) {
+                          setState(() {
+                            _minNum = 0;
+                            _includeDigits = false;
+                          });
+                        }
+                        if (parsed != null && parsed > 0) {
+                          setState(() => _includeDigits = true);
+                        }
                       },
                     ),
                   ),
@@ -253,15 +329,31 @@ class _PasswordGenDialogState extends State<PasswordGenDialog> {
                         TextInputFormatter.withFunction((oldValue, newValue) {
                           if (newValue.text.isEmpty) return newValue;
                           final val = int.tryParse(newValue.text);
-                          if (val == null || val > (_length - (_minNum + (_includeUpper ? 1 : 0) + (_includeLower ? 1 : 0)))) return oldValue;
+                          if (val == null ||
+                              val >
+                                  (_length -
+                                      (_minNum +
+                                          (_includeUpper ? 1 : 0) +
+                                          (_includeLower ? 1 : 0)))) {
+                            return oldValue;
+                          }
                           return newValue;
                         }),
                       ],
                       onChanged: (value) {
                         final parsed = int.tryParse(value);
-                        if (parsed != null) {setState(() =>_minSym = parsed);}
-                        if (parsed == 0) {setState(() {_minSym = 0; _includeSymbols = false;});}
-                        if (parsed != null && parsed > 0) setState(() => _includeSymbols = true);
+                        if (parsed != null) {
+                          setState(() => _minSym = parsed);
+                        }
+                        if (parsed == 0) {
+                          setState(() {
+                            _minSym = 0;
+                            _includeSymbols = false;
+                          });
+                        }
+                        if (parsed != null && parsed > 0) {
+                          setState(() => _includeSymbols = true);
+                        }
                       },
                     ),
                   ),
@@ -279,10 +371,18 @@ class _PasswordGenDialogState extends State<PasswordGenDialog> {
               style: TextButton.styleFrom(
                 backgroundColor: kAccent.withAlpha(30),
                 foregroundColor: kAccentLight,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text('Close', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

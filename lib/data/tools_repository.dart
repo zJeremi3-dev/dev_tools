@@ -10,7 +10,7 @@ final List<ToolModule> kTools = [
     icon: Icons.vpn_key,
     category: "Generator",
     dialogBuilder: (context) => const PasswordGenDialog(),
-  ),  // 1 // Password Generator
+  ), // 1 // Password Generator
   ToolModule(
     id: 2,
     name: "PW-Strength-Test",
@@ -18,7 +18,7 @@ final List<ToolModule> kTools = [
     icon: Icons.shield,
     category: "Security",
     dialogBuilder: (context) => const PWStrengthDialog(),
-  ),  // 2 // PW Strength
+  ), // 2 // PW Strength
   ToolModule(
     id: 3,
     name: "QR-Code Generator",
@@ -26,7 +26,7 @@ final List<ToolModule> kTools = [
     icon: Icons.qr_code_2,
     category: "Generator",
     dialogBuilder: (context) => const QRGenDialog(),
-  ),  // 3 // QR-Code Generator
+  ), // 3 // QR-Code Generator
   ToolModule(
     id: 4,
     name: "Barcode Generator",
@@ -34,7 +34,7 @@ final List<ToolModule> kTools = [
     icon: Icons.receipt_long,
     category: "Generator",
     dialogBuilder: (context) => const BarcodeGenDialog(),
-  ),  // 4 // Barcode Generator
+  ), // 4 // Barcode Generator
   ToolModule(
     id: 5,
     name: "Bin ↔ Dec",
@@ -42,7 +42,7 @@ final List<ToolModule> kTools = [
     icon: Icons.swap_horiz,
     category: "Converter",
     dialogBuilder: (context) => const BinDecConverterDialog(),
-  ),  // 5 // Bin Dec Converter
+  ), // 5 // Bin Dec Converter
   ToolModule(
     id: 6,
     name: "Randomizer",
@@ -50,7 +50,7 @@ final List<ToolModule> kTools = [
     icon: Icons.casino_outlined,
     category: "Generator",
     dialogBuilder: (context) => const RandomNumberDialog(),
-  ),  // 6 // Randomizer
+  ), // 6 // Randomizer
   ToolModule(
     id: 7,
     name: "Hash Generator",
@@ -58,7 +58,7 @@ final List<ToolModule> kTools = [
     icon: Icons.tag,
     category: "Security",
     dialogBuilder: (context) => const HashGenDialog(),
-  ),  // 7 // Hash Generator
+  ), // 7 // Hash Generator
   ToolModule(
     id: 8,
     name: "Base64",
@@ -66,7 +66,7 @@ final List<ToolModule> kTools = [
     icon: Icons.code,
     category: "Converter",
     dialogBuilder: (context) => const Base64Dialog(),
-  ),  // 8 // Base64
+  ), // 8 // Base64
   ToolModule(
     id: 9,
     name: "URL Encoder",
@@ -74,7 +74,7 @@ final List<ToolModule> kTools = [
     icon: Icons.link,
     category: "Converter",
     dialogBuilder: (context) => const UrlEncodeDialog(),
-  ),  // 9 // URL Encoder
+  ), // 9 // URL Encoder
   ToolModule(
     id: 10,
     name: "JSON Formatter",
@@ -82,7 +82,7 @@ final List<ToolModule> kTools = [
     icon: Icons.data_object,
     category: "Text",
     dialogBuilder: (context) => const JsonFormatDialog(),
-  ),  // 10 // JSON formatter
+  ), // 10 // JSON formatter
   ToolModule(
     id: 11,
     name: "Color Picker",
@@ -90,7 +90,7 @@ final List<ToolModule> kTools = [
     icon: Icons.palette,
     category: "Design",
     dialogBuilder: (context) => const ColorPickerDialog(),
-  ),  // 11 // Color Picker
+  ), // 11 // Color Picker
   ToolModule(
     id: 12,
     name: "Unix-Timestamp",
@@ -98,7 +98,7 @@ final List<ToolModule> kTools = [
     icon: Icons.schedule,
     category: "Converter",
     dialogBuilder: (context) => const UnixTimestampDialog(),
-  ),  // 12 // Unix-Timestamp Converter
+  ), // 12 // Unix-Timestamp Converter
   ToolModule(
     id: 13,
     name: "Regex Tester",
@@ -106,7 +106,7 @@ final List<ToolModule> kTools = [
     icon: Icons.manage_search,
     category: "Text",
     dialogBuilder: (context) => const RegexTesterDialog(),
-  ),  // 13 // Regex Tester
+  ), // 13 // Regex Tester
   ToolModule(
     id: 14,
     name: "UUID Generator",
@@ -114,7 +114,7 @@ final List<ToolModule> kTools = [
     icon: Icons.fingerprint,
     category: "Generator",
     dialogBuilder: (context) => const UuidGenDialog(),
-  ),  // 14 // UUID Generator
+  ), // 14 // UUID Generator
   ToolModule(
     id: 15,
     name: "RSA Key-Pair",
@@ -122,7 +122,7 @@ final List<ToolModule> kTools = [
     icon: Icons.key,
     category: "Security",
     dialogBuilder: (context) => const RSADialog(),
-  ),  // 15 // RSA Key Pair
+  ), // 15 // RSA Key Pair
 ];
 final List<String> kCategories = [
   "Generator",

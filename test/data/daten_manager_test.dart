@@ -8,14 +8,20 @@ void main() {
   });
 
   group('order lists (favorite / normal / hide)', () {
-    test('loadFavoriteOrder returns an empty list when nothing was saved', () async {
-      expect(await DatenManager.loadFavoriteOrder(), isEmpty);
-    });
+    test(
+      'loadFavoriteOrder returns an empty list when nothing was saved',
+      () async {
+        expect(await DatenManager.loadFavoriteOrder(), isEmpty);
+      },
+    );
 
-    test('saveFavoriteOrder + loadFavoriteOrder round-trips correctly', () async {
-      await DatenManager.saveFavoriteOrder([1, 3, 7]);
-      expect(await DatenManager.loadFavoriteOrder(), [1.0, 3.0, 7.0]);
-    });
+    test(
+      'saveFavoriteOrder + loadFavoriteOrder round-trips correctly',
+      () async {
+        await DatenManager.saveFavoriteOrder([1, 3, 7]);
+        expect(await DatenManager.loadFavoriteOrder(), [1.0, 3.0, 7.0]);
+      },
+    );
 
     test('saveNormalOrder + loadNormalOrder round-trips correctly', () async {
       await DatenManager.saveNormalOrder([5, 2, 9]);
@@ -27,12 +33,15 @@ void main() {
       expect(await DatenManager.loadHideOrder(), [4.0]);
     });
 
-    test('loadFavoriteOrder returns an empty list instead of crashing on corrupted data', () async {
-      SharedPreferences.setMockInitialValues({
-        DatenManager.keyFavoriteOrder: 'not-valid-json{{{',
-      });
-      expect(await DatenManager.loadFavoriteOrder(), isEmpty);
-    });
+    test(
+      'loadFavoriteOrder returns an empty list instead of crashing on corrupted data',
+      () async {
+        SharedPreferences.setMockInitialValues({
+          DatenManager.keyFavoriteOrder: 'not-valid-json{{{',
+        });
+        expect(await DatenManager.loadFavoriteOrder(), isEmpty);
+      },
+    );
   });
 
   group('color scheme', () {

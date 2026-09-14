@@ -21,25 +21,33 @@ void main() {
     expect(find.text('a b&c'), findsOneWidget);
   });
 
-  testWidgets('invalid percent-encoding shows an error instead of crashing', (tester) async {
+  testWidgets('invalid percent-encoding shows an error instead of crashing', (
+    tester,
+  ) async {
     await tester.pumpWidget(wrap());
     await tester.tap(find.text('Decode'));
     await tester.pump();
     await tester.enterText(find.byType(TextField), '%zz');
     await tester.pump();
-    expect(find.text('Invalid input: not a validly encoded URL string.'), findsOneWidget);
+    expect(
+      find.text('Invalid input: not a validly encoded URL string.'),
+      findsOneWidget,
+    );
   });
 
-  testWidgets('switching mode while showing an error does not crash (regression)', (tester) async {
-    await tester.pumpWidget(wrap());
-    await tester.tap(find.text('Decode'));
-    await tester.pump();
-    await tester.enterText(find.byType(TextField), '%zz');
-    await tester.pump();
+  testWidgets(
+    'switching mode while showing an error does not crash (regression)',
+    (tester) async {
+      await tester.pumpWidget(wrap());
+      await tester.tap(find.text('Decode'));
+      await tester.pump();
+      await tester.enterText(find.byType(TextField), '%zz');
+      await tester.pump();
 
-    await tester.tap(find.text('Encode'));
-    await tester.pump();
+      await tester.tap(find.text('Encode'));
+      await tester.pump();
 
-    expect(tester.takeException(), isNull);
-  });
+      expect(tester.takeException(), isNull);
+    },
+  );
 }
