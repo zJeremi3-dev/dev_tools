@@ -1,6 +1,12 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Thin wrapper around [SharedPreferences] for all app persistence.
+///
+/// Every method here is a pure save/load pair with no business logic —
+/// that lives in [ToolsController]. Malformed stored data is caught and
+/// treated as "nothing saved" rather than crashing (see the `try/catch`
+/// in each `load*` method).
 class DatenManager {
   static const String keyFavoriteOrder = 'favorite_order';
   static const String keyNormalOrder = 'normal_order';

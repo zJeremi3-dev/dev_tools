@@ -4,6 +4,13 @@ import '../models/tool_module.dart';
 import '../data/tools_repository.dart';
 import '../data/daten_manager.dart';
 
+/// Holds all mutable app state (favorites, ordering, hidden tools, layout,
+/// color scheme) and the logic to change it.
+///
+/// Deliberately Flutter-agnostic beyond [ChangeNotifier] — this is what
+/// makes it directly unit-testable without a widget tree. UI code should
+/// only read from and call methods on this class, never touch
+/// [DatenManager] directly.
 class ToolsController extends ChangeNotifier {
   final List<ToolModule> tools = List.of(kTools);
   final List<String> categories = kCategories;
@@ -53,6 +60,8 @@ class ToolsController extends ChangeNotifier {
       filteredTools.where((t) => !favoriteOrder.contains(t.id)).toList();
 
   // --- Load ---
+  /// Loads all persisted state from disk. Call once, typically via the
+  /// `initialLoadProvider` FutureProvider at app start.
   Future<void> load() async {
     normalOrder = await DatenManager.loadNormalOrder();
     favoriteOrder = await DatenManager.loadFavoriteOrder();
@@ -75,6 +84,8 @@ class ToolsController extends ChangeNotifier {
   }
 
   // --- Favorites ---
+  /// Adds or removes [id] from the favorites, persists the change, and
+  /// notifies listeners.
   void toggleFavorite(double id) {
     favoriteOrder.contains(id)
         ? favoriteOrder.remove(id)
@@ -84,12 +95,14 @@ class ToolsController extends ChangeNotifier {
   }
 
   // --- Hide/Un-Hide ---
+  /// Hides the tool with [id] from the main view (still visible in Settings).
   void hideModule(double id) {
     hideOrder.add(id);
     DatenManager.saveHideOrder(hideOrder);
     notifyListeners();
   }
 
+  /// Reveals a previously hidden tool again.
   void unhideModule(double id) {
     hideOrder.remove(id);
     DatenManager.saveHideOrder(hideOrder);
@@ -100,12 +113,15 @@ class ToolsController extends ChangeNotifier {
       hideOrder.contains(id) ? unhideModule(id) : hideModule(id);
 
   // --- Module Layout ---
+  /// Switches between layout mode 1 (custom grid), 2 (per-category grid),
+  /// and 3 (tabular/dropdown), persisting the choice.
   void setModuleLayout(int type) {
     moduleLayout = type;
     DatenManager.saveModuleLayout(type);
     notifyListeners();
   }
 
+  /// Applies and persists color scheme [id]. No-op if [id] is already active.
   void setColorScheme(int id) {
     if (selectedScheme == id) return;
     applyColorScheme(id);
@@ -125,6 +141,8 @@ class ToolsController extends ChangeNotifier {
     });
   }
 
+  /// Reorders the non-favorited tools globally, moving the item at
+  /// [oldIndex] to [newIndex]. Favorited tools are untouched.
   void reorder(int oldIndex, int newIndex) {
     final positions = <int>[];
     for (int i = 0; i < tools.length; i++) {
@@ -141,6 +159,8 @@ class ToolsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Like [reorder], but scoped to tools within a single [category].
+  /// Tools outside that category keep their relative order.
   void reorderCategory(String category, int oldIndex, int newIndex) {
     final positions = <int>[];
     for (int i = 0; i < tools.length; i++) {
@@ -160,6 +180,7 @@ class ToolsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Reorders the favorites list itself.
   void reorderFavorites(int oldIndex, int newIndex) {
     final visible = favoriteTools;
     final moved = visible.removeAt(oldIndex);
