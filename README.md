@@ -1,16 +1,70 @@
-# dev_tools
+# Dev-Tools
 
-A board with many Tools that Developer need.
+![CI](https://github.com/zJeremi3-dev/dev_tools/actions/workflows/ci.yml/badge.svg)
 
-## Getting Started
+A local-first Flutter desktop/mobile app bundling 15 everyday developer tools in one place — no account, no cloud, no tracking. Everything runs and is stored entirely on-device.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+| Category | Tools |
+|---|---|
+| Generator | Password Generator, QR-Code Generator, Barcode Generator, Randomizer, UUID Generator |
+| Converter | Bin ↔ Dec, Base64, URL Encoder, Unix-Timestamp |
+| Security | PW-Strength-Test, Hash Generator, RSA Key-Pair |
+| Text | JSON Formatter, Regex Tester |
+| Design | Color Picker |
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Additional app-level features: favorites, hide/unhide tools, drag & drop reordering, 3 layout modes (custom grid, per-category grid, category-dropdown/tabular), 16 color schemes, fully responsive UI.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Why offline-only
+
+This app is meant to be a personal toolbox that works instantly, without setup, network access, or an account. All state (favorites, order, hidden tools, layout, color scheme) is persisted locally via `shared_preferences` — no backend, no sync, by design.
+
+## Tech stack
+
+- **Flutter** — UI framework
+- **Riverpod** — state management (`ChangeNotifierProvider` wrapping a plain `ChangeNotifier` controller)
+- **shared_preferences** — local persistence
+- Package-specific tools per module (`crypto` for hashing, `qr`/`barcode_widget` for codes, etc.)
+
+## Architecture
+
+```
+lib/
+  models/         Pure data classes (ToolModule)
+  data/           Static tool/category definitions + persistence (DatenManager)
+  state/          ToolsController (business logic, UI-independent) + Riverpod providers
+  widgets/        Reusable, dumb UI pieces (ToolCard, CategoryDropdownColumn, ...)
+  app/            Screen composition (MyHomePage)
+  settings/       Settings dialog and its sections
+  modules/        The 15 individual tool dialogs
+```
+
+The guiding principle: each layer has exactly one reason to change. `ToolsController` holds all app state and logic and knows nothing about Flutter widgets — this is what makes it directly unit-testable without spinning up any UI. Riverpod's `ChangeNotifierProvider` exposes that controller to the widget tree without manual prop-drilling.
+
+## Getting started
+
+```
+flutter pub get
+flutter run
+```
+
+## Testing
+
+```
+flutter analyze
+flutter test
+```
+
+The test suite covers:
+- `ToolsController` — favorites, hide/unhide, search/filter, all three reorder variants, persistence round-trips
+- Data integrity of the static tool/category list
+- `DatenManager` persistence, including malformed-data handling
+- Widget behavior for `ToolCard` and 8 of the 15 tool modules (password generator, converters, hash generator, UUID generator, regex tester)
+
+Not yet covered: `pw_strength`, `json_formatter`, `color_picker`, `qr_generator`, `barcode_generator`, `rsa`, and the settings dialogs — planned for a future pass.
+
+## Known limitations / roadmap
+
+- Color scheme is implemented via global mutable variables (`colors.dart`) rather than a fully Riverpod-driven theme — a pragmatic tradeoff for a single-screen app, flagged as technical debt rather than hidden.
+- Test coverage is partial (see above).
