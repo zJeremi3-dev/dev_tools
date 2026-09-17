@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dev_tools/state/tools_controller.dart';
+import 'package:dev_tools/colors.dart';
 
 void main() {
   // ToolsController persists via DatenManager -> SharedPreferences.
@@ -251,6 +252,18 @@ void main() {
       c.setSearchQuery('x');
 
       expect(notifications, 4);
+    });
+  });
+
+  group('color scheme persistence', () {
+    test('load() restores the previously saved color scheme', () async {
+      final first = ToolsController();
+      first.setColorScheme(5);
+
+      final second = ToolsController();
+      await second.load();
+
+      expect(selectedScheme, 5);
     });
   });
 }
