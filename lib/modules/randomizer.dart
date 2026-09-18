@@ -66,7 +66,7 @@ class _RandomNumberDialogState extends State<RandomNumberDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Binary ↔ Decimal',
+                'Randomizer',
                 style: TextStyle(
                   color: kTextPrimary,
                   fontSize: 18,

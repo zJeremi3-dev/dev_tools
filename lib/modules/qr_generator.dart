@@ -250,6 +250,7 @@ class _QRGenDialogState extends State<QRGenDialog> {
                   children: [
                     DropdownButtonFormField<int>(
                       initialValue: _selectedSize,
+                      isExpanded: true,
                       decoration: fieldDecoration('Size'),
                       dropdownColor: kSurfaceColor,
                       style: TextStyle(color: kTextPrimary, fontSize: 13),
@@ -261,7 +262,10 @@ class _QRGenDialogState extends State<QRGenDialog> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text('Version $v'),
+                              Text(
+                                'Version $v',
+                                overflow: TextOverflow.ellipsis,
+                              ),
                               if (locked) ...[
                                 const SizedBox(width: 6),
                                 Icon(
@@ -293,6 +297,7 @@ class _QRGenDialogState extends State<QRGenDialog> {
                     const SizedBox(height: 10),
                     DropdownButtonFormField<int>(
                       initialValue: _selectedQuality,
+                      isExpanded: true,
                       decoration: fieldDecoration('Quality'),
                       dropdownColor: kSurfaceColor,
                       style: TextStyle(color: kTextPrimary, fontSize: 13),
@@ -303,20 +308,7 @@ class _QRGenDialogState extends State<QRGenDialog> {
                         return DropdownMenuItem<int>(
                           value: e.key,
                           enabled: !locked,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(e.value),
-                              if (locked) ...[
-                                const SizedBox(width: 6),
-                                Icon(
-                                  Icons.lock,
-                                  size: 12,
-                                  color: kTextSecondary.withAlpha(150),
-                                ),
-                              ],
-                            ],
-                          ),
+                          child: Text(e.value, overflow: TextOverflow.ellipsis),
                         );
                       }).toList(),
                       onChanged: (v) {

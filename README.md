@@ -60,9 +60,9 @@ The test suite covers:
 - `ToolsController` — favorites, hide/unhide, search/filter, all three reorder variants, persistence round-trips, including color scheme restoration
 - Data integrity of the static tool/category list
 - `DatenManager` persistence, including malformed-data handling
-- Widget behavior for `ToolCard` and 8 of the 15 tool modules (password generator, converters, hash generator, UUID generator, regex tester)
+- Widget behavior for `ToolCard` and all the 15 tool modules (password generator, converters, hash generator, UUID generator, regex tester, rsa…)
 
-Not yet covered: `pw_strength`, `json_formatter`, `color_picker`, `qr_generator`, `barcode_generator`, `rsa`, and the settings dialogs — planned for a future pass.
+Not yet covered:  The settings dialogs — planned for a future pass.
 
 ## Known limitations / roadmap
 

@@ -109,40 +109,42 @@ class _PWStrengthDialogState extends State<PWStrengthDialog> {
             child: Row(
               children: [
                 Expanded(
-                  child: Row(
-                    children: [
-                      Text(
-                        "Entropy: ${_entropy.toStringAsFixed(2)}  -> ",
-                        style: TextStyle(
-                          color: kTextPrimary,
-                          fontSize: 15,
-                          letterSpacing: 2,
-                          fontFamily: 'monospace',
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Entropy: ${_entropy.toStringAsFixed(2)}  -> ",
+                          style: TextStyle(
+                            color: kTextPrimary,
+                            fontSize: 15,
+                            letterSpacing: 1,
+                            fontFamily: 'monospace',
+                          ),
                         ),
-                      ),
-                      Text(
-                        _strength,
-                        style: TextStyle(
-                          color: () {
-                            return _strength == "Very Weak"
-                                ? Color(0xFF81C784)
-                                : _strength == "Weak"
-                                ? Color(0xFFFFEE58)
-                                : _strength == "Fair"
-                                ? Color(0xFFFFA726)
-                                : _strength == "Strong"
-                                ? Color(0xFFe53935)
-                                : _strength == "Very Strong"
-                                ? Color(0xFF4A148C)
-                                : Color(0x00000000);
-                          }(),
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2,
-                          fontFamily: 'monospace',
+                        TextSpan(
+                          text: _strength,
+                          style: TextStyle(
+                            color: () {
+                              return _strength == "Very Weak"
+                                  ? Color(0xFF81C784)
+                                  : _strength == "Weak"
+                                  ? Color(0xFFFFEE58)
+                                  : _strength == "Fair"
+                                  ? Color(0xFFFFA726)
+                                  : _strength == "Strong"
+                                  ? Color(0xFFe53935)
+                                  : _strength == "Very Strong"
+                                  ? Color(0xFF4A148C)
+                                  : Color(0x00000000);
+                            }(),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1,
+                            fontFamily: 'monospace',
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Tooltip(
