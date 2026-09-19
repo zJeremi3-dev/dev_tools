@@ -60,9 +60,11 @@ The test suite covers:
 - `ToolsController` — favorites, hide/unhide, search/filter, all three reorder variants, persistence round-trips, including color scheme restoration
 - Data integrity of the static tool/category list
 - `DatenManager` persistence, including malformed-data handling
-- Widget behavior for `ToolCard` and all the 15 tool modules (password generator, converters, hash generator, UUID generator, regex tester, rsa…)
+- All 15 tool modules (password generator, converters, hash generator, UUID generator, regex tester, RSA tester mode, etc.)
+- `ToolCard` and all settings widgets (`SettingsDialog`, `HiddenModulesSection`, `ModuleLayoutSection`, `ColorSchemeDialog`)
+- A full app smoke test (`home_page_smoke_test.dart`) covering load, search, and opening settings
 
-Not yet covered:  The settings dialogs — planned for a future pass.
+Not yet covered: RSA key *generation* itself (only the encrypt/decrypt tester mode is tested — key generation runs an expensive isolate-based prime search unsuited to a fast test suite).
 
 ## Known limitations / roadmap
 

@@ -59,7 +59,7 @@ class _ModuleLayoutSectionState extends State<ModuleLayoutSection> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildCheckboxOption("Category", !custom, () {
+                buildCheckboxOption("Category", !custom && !tabular, () {
                   setState(() {
                     custom = !custom;
                     if (custom) tabular = false;
