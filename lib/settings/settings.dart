@@ -1,4 +1,5 @@
 import 'package:dev_tools/settings/color_scheme_dialog.dart';
+import 'dart:io';
 
 import '../colors.dart';
 import '../widgets/widgets.dart';
@@ -7,6 +8,10 @@ import 'hidden_modules.dart';
 import 'module_layout.dart';
 
 import 'package:flutter/material.dart';
+import '../services/update_checker.dart';
+import '../services/self_updater.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsDialog extends StatefulWidget {
   final List<ToolModule> tools;
@@ -15,6 +20,7 @@ class SettingsDialog extends StatefulWidget {
   final void Function(double id) onHide;
   final int moduleLayout;
   final void Function(int type)? onLayoutChange;
+  final UpdateInfo? updateInfo;
 
   const SettingsDialog({
     super.key,
@@ -24,6 +30,7 @@ class SettingsDialog extends StatefulWidget {
     required this.onHide,
     required this.moduleLayout,
     this.onLayoutChange,
+    this.updateInfo,
   });
 
   @override
@@ -35,6 +42,16 @@ class _SettingsDialogState extends State<SettingsDialog> {
       widget.tools.where((t) => widget.hideOrder.contains(t.id)).toList();
   List<ToolModule> get _visibleTools =>
       widget.tools.where((t) => !widget.hideOrder.contains(t.id)).toList();
+
+  String _appVersion = '';
+
+  @override
+  void initState() {
+    super.initState();
+    PackageInfo.fromPlatform().then((info) {
+      if (mounted) setState(() => _appVersion = info.version);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +81,47 @@ class _SettingsDialogState extends State<SettingsDialog> {
             ],
           ),
           const SizedBox(height: 16),
+
+          if (widget.updateInfo != null) ...[
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.amber.withAlpha(30),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.amber.withAlpha(100)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.system_update_alt,
+                    color: Colors.amber,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'Update to v${widget.updateInfo!.latestVersion} available',
+                      style: TextStyle(color: kTextPrimary, fontSize: 13),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      final info = widget.updateInfo!;
+                      if (Platform.isWindows &&
+                          info.windowsDownloadUrl != null) {
+                        await downloadAndInstall(info.windowsDownloadUrl!);
+                      } else {
+                        launchUrl(Uri.parse(info.releaseUrl));
+                      }
+                    },
+                    child: const Text('Update'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
 
           buildSection(
             label: "",
@@ -116,6 +174,41 @@ class _SettingsDialogState extends State<SettingsDialog> {
               ModuleLayoutSection(
                 initialValue: widget.moduleLayout,
                 onChanged: widget.onLayoutChange,
+              ),
+
+              const SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 300,
+                    height: 35,
+                    child: OutlinedButton.icon(
+                      onPressed: () => showLicensePage(
+                        context: context,
+                        applicationName: 'Dev-Tools',
+                        applicationVersion: _appVersion,
+                      ),
+                      icon: Icon(
+                        Icons.description_outlined,
+                        color: kAccentLight,
+                      ),
+                      label: Text(
+                        "Licenses",
+                        style: TextStyle(color: kTextPrimary, fontSize: 20),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        side: BorderSide(
+                          color: kAccent.withAlpha(100),
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

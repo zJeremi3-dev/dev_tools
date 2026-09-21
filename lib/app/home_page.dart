@@ -1,13 +1,17 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../state/providers.dart';
 import '../colors.dart';
 import '../models/tool_module.dart';
 import '../settings/settings.dart';
 import '../widgets/widgets.dart';
+
+import '../services/self_updater.dart';
 
 class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -175,6 +179,35 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           ],
         ),
         actions: [
+          Consumer(
+            builder: (context, ref, _) {
+              final update = ref.watch(updateCheckProvider).valueOrNull;
+              if (update == null) return const SizedBox.shrink();
+              return Tooltip(
+                message: 'Update to v${update.latestVersion} available',
+                decoration: BoxDecoration(
+                  color: kSurfaceColor,
+                  border: Border.all(width: 1, color: kAccent),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                textStyle: TextStyle(color: kTextPrimary),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.system_update_alt,
+                    color: Colors.amber,
+                  ),
+                  onPressed: () async {
+                    if (Platform.isWindows &&
+                        update.windowsDownloadUrl != null) {
+                      await downloadAndInstall(update.windowsDownloadUrl!);
+                    } else {
+                      launchUrl(Uri.parse(update.releaseUrl));
+                    }
+                  },
+                ),
+              );
+            },
+          ),
           Tooltip(
             message: "Settings",
             decoration: BoxDecoration(
@@ -196,6 +229,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                     onHide: controller.hideModule,
                     moduleLayout: controller.moduleLayout,
                     onLayoutChange: controller.setModuleLayout,
+                    updateInfo: ref.read(updateCheckProvider).valueOrNull,
                   ),
                   useRootNavigator: true,
                 );
