@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../own_colors.dart';
 
 /// Thin wrapper around [SharedPreferences] for all app persistence.
 ///
@@ -12,7 +13,9 @@ class DatenManager {
   static const String keyNormalOrder = 'normal_order';
   static const String keyHideOrder = 'hide_order';
   static const String keyColorScheme = 'color_scheme';
+  static const String keyOwnColorScheme = 'own_color_scheme';
   static const String keyModuleLayout = 'module_layout';
+  static const String keyOwnColorSchemeData = 'own_color_scheme_data';
 
   static Future<void> saveFavoriteOrder(List<double> ids) async {
     final prefs = await SharedPreferences.getInstance();
@@ -75,6 +78,16 @@ class DatenManager {
     return prefs.getInt(keyColorScheme) ?? 1;
   }
 
+  static Future<void> saveOwnColorScheme(int colorScheme) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(keyOwnColorScheme, colorScheme);
+  }
+
+  static Future<int> loadOwnColorScheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(keyOwnColorScheme) ?? 1;
+  }
+
   static Future<void> saveModuleLayout(int type) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(keyModuleLayout, type);
@@ -83,5 +96,27 @@ class DatenManager {
   static Future<int> loadModuleLayout() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt(keyModuleLayout) ?? 1;
+  }
+
+  static Future<void> saveOwnColorSchemeData(
+    List<OwnColorSchemeData> schemes,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonList = schemes.map((s) => s.toJson()).toList();
+    await prefs.setString(keyOwnColorSchemeData, json.encode(jsonList));
+  }
+
+  static Future<List<OwnColorSchemeData>> loadOwnColorSchemeData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString(keyOwnColorSchemeData);
+    if (jsonString == null) return [];
+    try {
+      final jsonList = json.decode(jsonString) as List;
+      return jsonList
+          .map((e) => OwnColorSchemeData.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      return [];
+    }
   }
 }

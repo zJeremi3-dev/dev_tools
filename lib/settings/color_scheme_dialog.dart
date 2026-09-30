@@ -1,6 +1,8 @@
 import '../colors.dart';
+import '../own_colors.dart';
 import '../widgets/widgets.dart';
 import '../state/providers.dart';
+import 'scheme_adder.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,10 +38,41 @@ class ColorSchemeDialog extends ConsumerWidget {
     );
   }
 
+  Widget _colorButtonOwn(
+    WidgetRef ref,
+    OwnColorSchemeData scheme,
+    int selected,
+  ) {
+    return Tooltip(
+      message: scheme.name,
+      decoration: BoxDecoration(
+        color: kSurfaceColor,
+        border: Border.all(width: 1, color: kAccent),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      textStyle: TextStyle(color: kTextPrimary),
+      child: GestureDetector(
+        onTap: () =>
+            ref.read(toolsControllerProvider).setOwnColorScheme(scheme.id),
+        child: Container(
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: scheme.accent,
+            border: Border.all(width: 2, color: Colors.white70),
+            borderRadius: BorderRadius.circular(13),
+          ),
+          child: selected == scheme.id
+              ? const Icon(Icons.check_box)
+              : const Text(""),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(toolsControllerProvider);
-    final selected = selectedScheme;
+    final controller = ref.watch(toolsControllerProvider);
 
     return ResponsiveDialog(
       child: Column(
@@ -67,17 +100,35 @@ class ColorSchemeDialog extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           buildSection(
-            label: "Options",
+            label: "Schemes",
             children: [
               Wrap(
                 spacing: 15,
                 runSpacing: 15,
                 children: kColorSchemes
-                    .map((s) => _colorButton(ref, s, selected))
+                    .map((s) => _colorButton(ref, s, selectedScheme))
                     .toList(),
               ),
             ],
           ),
+          controller.ownColorSchemes.isNotEmpty
+              ? buildSection(
+                  label: "Own Schemes",
+                  children: [
+                    Wrap(
+                      spacing: 15,
+                      runSpacing: 15,
+                      children: controller.ownColorSchemes
+                          .map(
+                            (s) => _colorButtonOwn(ref, s, selectedOwnScheme),
+                          )
+                          .toList(),
+                    ),
+                  ],
+                )
+              : const SizedBox.shrink(),
+          const SizedBox(height: 8),
+          SchemeAdderSection(),
           const SizedBox(height: 16),
           Align(
             alignment: Alignment.centerLeft,

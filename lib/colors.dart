@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'own_colors.dart';
 
 Color kBgColor = Color(0xFF0F0F13);
 Color kSurfaceColor = Color(0xFF1C1B22);
@@ -199,5 +200,6 @@ void applyColorScheme(int id) {
   kAccentLight = scheme.accentLight;
   kTextPrimary = scheme.textPrimary;
   kTextSecondary = scheme.textSecondary;
+  selectedOwnScheme = 0;
   selectedScheme = scheme.id;
 }

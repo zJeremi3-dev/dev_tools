@@ -1,4 +1,5 @@
 import 'package:dev_tools/colors.dart';
+import 'package:dev_tools/own_colors.dart';
 import 'package:flutter/material.dart';
 import '../models/tool_module.dart';
 import '../data/tools_repository.dart';
@@ -59,6 +60,12 @@ class ToolsController extends ChangeNotifier {
   List<ToolModule> get nonFavoriteTools =>
       filteredTools.where((t) => !favoriteOrder.contains(t.id)).toList();
 
+  List<OwnColorSchemeData> ownColorSchemes = [];
+
+  void singleChangeNotifier() {
+    notifyListeners();
+  }
+
   // --- Load ---
   /// Loads all persisted state from disk. Call once, typically via the
   /// `initialLoadProvider` FutureProvider at app start.
@@ -67,7 +74,16 @@ class ToolsController extends ChangeNotifier {
     favoriteOrder = await DatenManager.loadFavoriteOrder();
     hideOrder = await DatenManager.loadHideOrder();
     moduleLayout = await DatenManager.loadModuleLayout();
-    applyColorScheme(await DatenManager.loadColorScheme());
+    ownColorSchemes = await DatenManager.loadOwnColorSchemeData();
+
+    final savedOwnSchemeId = await DatenManager.loadOwnColorScheme();
+    final savedSchemeId = await DatenManager.loadColorScheme();
+
+    if (savedOwnSchemeId != 0 && ownColorSchemes.isNotEmpty) {
+      applyOwnColorScheme(savedOwnSchemeId, ownColorSchemes);
+    } else {
+      applyColorScheme(savedSchemeId);
+    }
     _sortTools();
     notifyListeners();
   }
@@ -122,11 +138,47 @@ class ToolsController extends ChangeNotifier {
   }
 
   /// Applies and persists color scheme [id]. No-op if [id] is already active.
+  /// Applies and persists color scheme [id].
   void setColorScheme(int id) {
-    if (selectedScheme == id) return;
+    if (selectedScheme == id && selectedOwnScheme == 0) return;
     applyColorScheme(id);
     DatenManager.saveColorScheme(id);
+    DatenManager.saveOwnColorScheme(0);
+
     notifyListeners();
+  }
+
+  void setOwnColorScheme(int id) {
+    applyOwnColorScheme(id, ownColorSchemes);
+    DatenManager.saveColorScheme(0);
+    DatenManager.saveOwnColorScheme(id);
+
+    notifyListeners();
+  }
+
+  Future<void> addOwnColorScheme({
+    required String name,
+    required Color bg,
+    required Color surface,
+    required Color accent,
+    required Color accentLight,
+    required Color textPrimary,
+    required Color textSecondary,
+  }) async {
+    final newScheme = OwnColorSchemeData(
+      id: (ownColorSchemes.isEmpty ? 1 : (ownColorSchemes.last.id + 1)),
+      name: name,
+      bg: bg,
+      surface: surface,
+      accent: accent,
+      accentLight: accentLight,
+      textPrimary: textPrimary,
+      textSecondary: textSecondary,
+    );
+
+    ownColorSchemes.add(newScheme);
+    await DatenManager.saveOwnColorSchemeData(ownColorSchemes);
+    setOwnColorScheme(newScheme.id);
   }
 
   // --- Sorting ---
