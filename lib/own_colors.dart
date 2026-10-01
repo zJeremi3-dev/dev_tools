@@ -5,10 +5,10 @@ int selectedOwnScheme = 0;
 
 class OwnColorSchemeData {
   final int id;
-  final String name;
+  String name;
   final Color bg, surface, accent, accentLight, textPrimary, textSecondary;
 
-  const OwnColorSchemeData({
+  OwnColorSchemeData({
     required this.id,
     required this.name,
     required this.bg,

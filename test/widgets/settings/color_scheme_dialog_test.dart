@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dev_tools/colors.dart';
-import 'package:dev_tools/settings/color_scheme_dialog.dart';
+import 'package:dev_tools/settings/color_scheme/color_scheme_dialog.dart';
 
 void main() {
   setUp(() {

@@ -144,7 +144,6 @@ class ToolsController extends ChangeNotifier {
     applyColorScheme(id);
     DatenManager.saveColorScheme(id);
     DatenManager.saveOwnColorScheme(0);
-
     notifyListeners();
   }
 
@@ -152,7 +151,6 @@ class ToolsController extends ChangeNotifier {
     applyOwnColorScheme(id, ownColorSchemes);
     DatenManager.saveColorScheme(0);
     DatenManager.saveOwnColorScheme(id);
-
     notifyListeners();
   }
 
@@ -179,6 +177,24 @@ class ToolsController extends ChangeNotifier {
     ownColorSchemes.add(newScheme);
     await DatenManager.saveOwnColorSchemeData(ownColorSchemes);
     setOwnColorScheme(newScheme.id);
+  }
+
+  Future<void> removeOwnColorScheme(int id) async {
+    ownColorSchemes.removeWhere((scheme) => scheme.id == id);
+    await DatenManager.saveOwnColorSchemeData(ownColorSchemes);
+    if (selectedOwnScheme != 0) {
+      ownColorSchemes.isEmpty
+          ? setColorScheme(1)
+          : id == selectedOwnScheme
+          ? setOwnColorScheme(ownColorSchemes.first.id)
+          : 0;
+    }
+  }
+
+  Future<void> changeOwnColorSchemeName(int id, String newName) async {
+    ownColorSchemes.firstWhere((scheme) => scheme.id == id).name = newName;
+    await DatenManager.saveOwnColorSchemeData(ownColorSchemes);
+    notifyListeners();
   }
 
   // --- Sorting ---

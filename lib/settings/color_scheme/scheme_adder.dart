@@ -2,11 +2,11 @@ import 'package:dev_tools/widgets/shared_widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../colors.dart';
+import '../../colors.dart';
 import 'package:flutter/material.dart';
 
-import '../state/providers.dart';
-import '../own_colors.dart';
+import '../../state/providers.dart';
+import '../../own_colors.dart';
 
 class SchemeAdderSection extends ConsumerStatefulWidget {
   // Variables

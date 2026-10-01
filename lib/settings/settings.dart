@@ -1,4 +1,4 @@
-import 'package:dev_tools/settings/color_scheme_dialog.dart';
+import 'package:dev_tools/settings/color_scheme/color_scheme_dialog.dart';
 import 'dart:io';
 
 import '../colors.dart';
