@@ -1,19 +1,16 @@
-import 'package:dev_tools/widgets/shared_widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../colors.dart';
-import 'package:flutter/material.dart';
-
 import '../../state/providers.dart';
-import '../../own_colors.dart';
+import 'package:dev_tools/widgets/shared_widgets.dart';
+
+import 'color_picker_overlay.dart';
+import 'scheme_adder_controller.dart';
 
 class SchemeAdderSection extends ConsumerStatefulWidget {
-  // Variables
-  const SchemeAdderSection({
-    super.key,
-    // Variables -> Parameters
-  });
+  const SchemeAdderSection({super.key});
 
   @override
   ConsumerState<SchemeAdderSection> createState() => _SchemeAdderSectionState();
@@ -21,109 +18,25 @@ class SchemeAdderSection extends ConsumerStatefulWidget {
 
 class _SchemeAdderSectionState extends ConsumerState<SchemeAdderSection> {
   bool _adderExpanded = false;
-
-  String _colorToHex(Color color) {
-    return color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase();
-  }
-
-  final nameController = TextEditingController();
-  late final TextEditingController bgController;
-  late final TextEditingController surfaceController;
-  late final TextEditingController accentController;
-  late final TextEditingController accentLightController;
-  late final TextEditingController textPrimaryController;
-  late final TextEditingController textSecondaryController;
-
-  int bgError = 0;
-  int surfaceError = 0;
-  int accentError = 0;
-  int accentLightError = 0;
-  int textPrimaryError = 0;
-  int textSecondaryError = 0;
+  late final SchemeAdderController _controller;
 
   @override
   void initState() {
     super.initState();
-    bgController = TextEditingController(text: _colorToHex(kBgColor));
-    surfaceController = TextEditingController(text: _colorToHex(kSurfaceColor));
-    accentController = TextEditingController(text: _colorToHex(kAccent));
-    accentLightController = TextEditingController(
-      text: _colorToHex(kAccentLight),
-    );
-    textPrimaryController = TextEditingController(
-      text: _colorToHex(kTextPrimary),
-    );
-    textSecondaryController = TextEditingController(
-      text: _colorToHex(kTextSecondary),
-    );
+    _controller = SchemeAdderController(ref);
   }
 
   @override
   void dispose() {
-    nameController.dispose();
-    bgController.dispose();
-    surfaceController.dispose();
-    accentController.dispose();
-    accentLightController.dispose();
-    textPrimaryController.dispose();
-    textSecondaryController.dispose();
+    ColorPickerOverlay.hide();
+    _controller.dispose();
     super.dispose();
-  }
-
-  Color? parseHexColor(String input) {
-    if (input.length != 8) return null;
-    final intValue = int.tryParse(input, radix: 16);
-    if (intValue == null) return null;
-    return Color(intValue);
-  }
-
-  int addTest() {
-    final bg = parseHexColor(bgController.text);
-    final surface = parseHexColor(surfaceController.text);
-    final accent = parseHexColor(accentController.text);
-    final accentLight = parseHexColor(accentLightController.text);
-    final textPrimary = parseHexColor(textPrimaryController.text);
-    final textSecondary = parseHexColor(textSecondaryController.text);
-    setState(() {
-      bgError = (bg == null) ? 1 : 0;
-      surfaceError = (surface == null) ? 1 : 0;
-      accentError = (accent == null) ? 1 : 0;
-      accentLightError = (accentLight == null) ? 1 : 0;
-      textPrimaryError = (textPrimary == null) ? 1 : 0;
-      textSecondaryError = (textSecondary == null) ? 1 : 0;
-    });
-    if ([
-      bg,
-      surface,
-      accent,
-      accentLight,
-      textPrimary,
-      textSecondary,
-    ].any((v) => v == null)) {
-      return 0;
-    }
-    return 1;
-  }
-
-  void _onColorChanged(String label, String value) {
-    final parsedColor = parseHexColor(value);
-    if (parsedColor != null) {
-      applyTestScheme(label, parsedColor);
-      ref.read(toolsControllerProvider).singleChangeNotifier();
-    } else {
-      setState(() {});
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     ref.listen(toolsControllerProvider, (previous, next) {
-      bgController.text = _colorToHex(kBgColor);
-      surfaceController.text = _colorToHex(kSurfaceColor);
-      accentController.text = _colorToHex(kAccent);
-      accentLightController.text = _colorToHex(kAccentLight);
-      textPrimaryController.text = _colorToHex(kTextPrimary);
-      textSecondaryController.text = _colorToHex(kTextSecondary);
+      _controller.updateControllersFromGlobals();
     });
 
     return Column(
@@ -167,7 +80,7 @@ class _SchemeAdderSectionState extends ConsumerState<SchemeAdderSection> {
                         width: 175,
                         child: TextField(
                           maxLength: 24,
-                          controller: nameController,
+                          controller: _controller.nameController,
                           decoration: fieldDecoration(
                             "Scheme Name",
                           ).copyWith(counterText: ""),
@@ -181,34 +94,46 @@ class _SchemeAdderSectionState extends ConsumerState<SchemeAdderSection> {
                       runSpacing: 20,
                       children: [
                         _colorTextField(
-                          bgController,
+                          _controller.bgController,
                           "BackGround",
-                          bgError == 0 ? kAccent : Color(0xFFFF0000),
+                          _controller.bgError == 0
+                              ? kAccent
+                              : const Color(0xFFFF0000),
                         ),
                         _colorTextField(
-                          surfaceController,
+                          _controller.surfaceController,
                           "Surface",
-                          surfaceError == 0 ? kAccent : Color(0xFFFF0000),
+                          _controller.surfaceError == 0
+                              ? kAccent
+                              : const Color(0xFFFF0000),
                         ),
                         _colorTextField(
-                          accentController,
+                          _controller.accentController,
                           "Accent",
-                          accentError == 0 ? kAccent : Color(0xFFFF0000),
+                          _controller.accentError == 0
+                              ? kAccent
+                              : const Color(0xFFFF0000),
                         ),
                         _colorTextField(
-                          accentLightController,
+                          _controller.accentLightController,
                           "Accent Light",
-                          accentLightError == 0 ? kAccent : Color(0xFFFF0000),
+                          _controller.accentLightError == 0
+                              ? kAccent
+                              : const Color(0xFFFF0000),
                         ),
                         _colorTextField(
-                          textPrimaryController,
+                          _controller.textPrimaryController,
                           "Text Primary",
-                          textPrimaryError == 0 ? kAccent : Color(0xFFFF0000),
+                          _controller.textPrimaryError == 0
+                              ? kAccent
+                              : const Color(0xFFFF0000),
                         ),
                         _colorTextField(
-                          textSecondaryController,
+                          _controller.textSecondaryController,
                           "Text Secondary",
-                          textSecondaryError == 0 ? kAccent : Color(0xFFFF0000),
+                          _controller.textSecondaryError == 0
+                              ? kAccent
+                              : const Color(0xFFFF0000),
                         ),
                       ],
                     ), // colors
@@ -224,31 +149,11 @@ class _SchemeAdderSectionState extends ConsumerState<SchemeAdderSection> {
                         textStyle: TextStyle(color: kTextPrimary),
                         child: IconButton(
                           onPressed: () {
-                            if (addTest() == 1) {
-                              ref
-                                  .read(toolsControllerProvider)
-                                  .addOwnColorScheme(
-                                    name: nameController.text,
-                                    bg: parseHexColor(bgController.text)!,
-                                    surface: parseHexColor(
-                                      surfaceController.text,
-                                    )!,
-                                    accent: parseHexColor(
-                                      accentController.text,
-                                    )!,
-                                    accentLight: parseHexColor(
-                                      accentLightController.text,
-                                    )!,
-                                    textPrimary: parseHexColor(
-                                      textPrimaryController.text,
-                                    )!,
-                                    textSecondary: parseHexColor(
-                                      textSecondaryController.text,
-                                    )!,
-                                  );
-                            }
+                            _controller.validateAndAddScheme(
+                              () => setState(() {}),
+                            );
                           },
-                          icon: Icon(Icons.add, color: Colors.green),
+                          icon: const Icon(Icons.add, color: Colors.green),
                         ),
                       ),
                     ), // add button
@@ -265,6 +170,7 @@ class _SchemeAdderSectionState extends ConsumerState<SchemeAdderSection> {
     String label,
     Color mark,
   ) {
+    final key = GlobalKey();
     return Container(
       width: 200,
       decoration: BoxDecoration(
@@ -299,7 +205,7 @@ class _SchemeAdderSectionState extends ConsumerState<SchemeAdderSection> {
                   preferBelow: false,
                   verticalOffset: 18,
                   textStyle: TextStyle(color: kTextPrimary),
-                  child: Icon(
+                  child: const Icon(
                     Icons.warning_amber_rounded,
                     size: 15,
                     color: Colors.yellow,
@@ -307,21 +213,35 @@ class _SchemeAdderSectionState extends ConsumerState<SchemeAdderSection> {
                 ),
             ],
           ),
-          SizedBox(height: 3),
+          const SizedBox(height: 3),
           Row(
             children: [
-              Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: Color(
-                    int.tryParse(controller.text, radix: 16) ?? 0x00000000,
+              GestureDetector(
+                key: key,
+                onTap: () => ColorPickerOverlay.show(
+                  context: context,
+                  key: key,
+                  controller: controller,
+                  label: label,
+                  onColorChanged: (label, hex) => _controller.onColorChanged(
+                    label,
+                    hex,
+                    () => setState(() {}),
                   ),
-                  border: Border.all(width: 2, color: Colors.white70),
-                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: Color(
+                      int.tryParse(controller.text, radix: 16) ?? 0x00000000,
+                    ),
+                    border: Border.all(width: 2, color: Colors.white70),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               SizedBox(
                 width: 125,
                 child: TextField(
@@ -334,7 +254,11 @@ class _SchemeAdderSectionState extends ConsumerState<SchemeAdderSection> {
                     "",
                   ).copyWith(prefixText: "0x ", counterText: ""),
                   style: TextStyle(color: kTextPrimary, fontSize: 14),
-                  onChanged: (value) => _onColorChanged(label, value),
+                  onChanged: (value) => _controller.onColorChanged(
+                    label,
+                    value,
+                    () => setState(() {}),
+                  ),
                 ),
               ),
             ],
