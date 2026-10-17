@@ -77,7 +77,7 @@ The test suite covers:
 - Data integrity of the static tool/category list
 - `DatenManager` persistence, including malformed-data handling
 - All 15 tool modules (password generator, converters, hash generator, UUID generator, regex tester, RSA tester mode, etc.)
-- `ToolCard` and all settings widgets (`SettingsDialog`, `HiddenModulesSection`, `ModuleLayoutSection`, `ColorSchemeDialog`)
+- `ToolCard` and all settings widgets (`SettingsDialog`, `HiddenModulesSection`, `ModuleLayoutSection`, `ColorSchemeDialog`, `SchemeAdder`)
 - A full app smoke test (`home_page_smoke_test.dart`) covering load, search, and opening settings
 
 Not yet covered: RSA key *generation* itself (only the encrypt/decrypt tester mode is tested — key generation runs an expensive isolate-based prime search unsuited to a fast test suite).

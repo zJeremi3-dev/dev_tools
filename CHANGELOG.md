@@ -10,7 +10,7 @@ the installer today get the most recent *tagged* version below.
 ## [Unreleased]
 
 ### Added
-- (nothing yet)
+- Scheme Adder
 
 ## [1.0.0] - 2026-09-21
 
