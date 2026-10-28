@@ -123,6 +123,14 @@ final List<ToolModule> kTools = [
     category: "Security",
     dialogBuilder: (context) => const RSADialog(),
   ), // 15 // RSA Key Pair
+  ToolModule(
+    id: 16,
+    name: "IP Leak Check",
+    description: "Shows your public IP and location details",
+    icon: Icons.public,
+    category: "Security",
+    dialogBuilder: (context) => const IpLeakDialog(),
+  ), // 16 // IP Leak Check
 ];
 final List<String> kCategories = [
   "Generator",
