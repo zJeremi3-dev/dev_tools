@@ -30,7 +30,8 @@ dependencies:
   package_info_plus: ^8.1.1
   flutter_colorpicker: ^1.1.0
   country_flags: ^4.1.2
-
+  image: ^4.5.0
+  pdf: ^3.11.0
 
 dev_dependencies:
   flutter_test:

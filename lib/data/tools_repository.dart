@@ -131,6 +131,14 @@ final List<ToolModule> kTools = [
     category: "Security",
     dialogBuilder: (context) => const IpLeakDialog(),
   ), // 16 // IP Leak Check
+  ToolModule(
+    id: 17,
+    name: "File Converter",
+    description: "Convert between various file formats",
+    icon: Icons.transform,
+    category: "Converter",
+    dialogBuilder: (context) => const FileConverterDialog(),
+  ), // 17 // File Converter
 ];
 final List<String> kCategories = [
   "Generator",
