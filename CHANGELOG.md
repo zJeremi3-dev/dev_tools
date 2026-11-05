@@ -15,6 +15,7 @@ the installer today get the most recent *tagged* version below.
 ### Added
 - IP-Leak-Check Module
 - File-Converter Module
+- Description-Display in tabular layout
 
 
 ## [1.1.0] - 2026-10-17

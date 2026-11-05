@@ -338,6 +338,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                                     (t) => buildTabularToolRow(
                                       icon: t.icon,
                                       name: t.name,
+                                      description: t.description,
                                       isFavorite: controller.favoriteOrder
                                           .contains(t.id),
                                       onTap: () => showDialog(
@@ -365,6 +366,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                                       (t) => buildTabularToolRow(
                                         icon: t.icon,
                                         name: t.name,
+                                        description: t.description,
                                         isFavorite: controller.favoriteOrder
                                             .contains(t.id),
                                         onTap: () => showDialog(

@@ -81,42 +81,53 @@ class _CategoryDropdownColumnState extends State<CategoryDropdownColumn> {
 Widget buildTabularToolRow({
   required IconData icon,
   required String name,
+  required String description,
   required bool isFavorite,
   required VoidCallback onTap,
   required VoidCallback onToggleFavorite,
   required void Function(Offset position) onSecondaryTapDown,
 }) {
-  return GestureDetector(
-    onSecondaryTapDown: (d) => onSecondaryTapDown(d.globalPosition),
-    child: InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        child: Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Icon(icon, color: kAccentLight, size: 20),
-                  SizedBox(width: 10),
-                  Text(
-                    name,
-                    style: TextStyle(color: kTextPrimary, fontSize: 12),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+  return Tooltip(
+    message: description,
+    waitDuration: const Duration(milliseconds: 1500),
+    decoration: BoxDecoration(
+      color: kSurfaceColor,
+      border: Border.all(width: 1, color: kAccent),
+      borderRadius: BorderRadius.circular(5),
+    ),
+    textStyle: TextStyle(color: kTextPrimary),
+    child: GestureDetector(
+      onSecondaryTapDown: (d) => onSecondaryTapDown(d.globalPosition),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          child: Row(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Icon(icon, color: kAccentLight, size: 20),
+                    SizedBox(width: 10),
+                    Text(
+                      name,
+                      style: TextStyle(color: kTextPrimary, fontSize: 12),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            GestureDetector(
-              onTap: onToggleFavorite,
-              child: Icon(
-                isFavorite ? Icons.star_rounded : Icons.star_border_rounded,
-                size: 18,
-                color: isFavorite ? Colors.yellow : kTextSecondary,
+              GestureDetector(
+                onTap: onToggleFavorite,
+                child: Icon(
+                  isFavorite ? Icons.star_rounded : Icons.star_border_rounded,
+                  size: 18,
+                  color: isFavorite ? Colors.yellow : kTextSecondary,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     ),
