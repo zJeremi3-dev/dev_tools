@@ -22,9 +22,17 @@ This app is meant to be a personal toolbox that works instantly, without setup
 or an account. All state (favorites, order, hidden tools, layout, color scheme)
 is persisted locally via `shared_preferences` — no backend, no sync, by design.
 
-The one exception: on startup, the app makes a single passive GET request to
-GitHub's public releases API to check for a newer version. No user data is
-sent. See `lib/services/update_checker.dart`.
+The exceptions are listed under Network usage.
+
+## Network usage
+
+Dev-Tools works offline, except for these features, which contact third-party services:
+
+| Feature | Service | What is sent | When |
+|---|---|---|---|
+| Update check | api.github.com | A plain GET request, no user data | On app start |
+| IP-Leak-Check | ipapi.co | Your IP is visible to the service (that is what the tool checks) | Only when you run the tool |
+| IP-Leak-Check (flag icons) | flagcdn.com | An image request (your IP is visible to the host) | Only when a result is shown |
 
 ## Tech stack
 
@@ -74,7 +82,7 @@ flutter test
 
 The test suite covers:
 - `ToolsController` — favorites, hide/unhide, search/filter, all three reorder variants, persistence round-trips, including color scheme restoration
-- Data integrity of the static tool/category list
+  - Data integrity of the static tool/category list
 - `DatenManager` persistence, including malformed-data handling
 - All 17 tool modules (password generator, converters, hash generator, UUID generator, regex tester, RSA tester mode, etc.)
 - `ToolCard` and all settings widgets (`SettingsDialog`, `HiddenModulesSection`, `ModuleLayoutSection`, `ColorSchemeDialog`, `SchemeAdder`)
