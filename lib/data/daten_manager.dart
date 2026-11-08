@@ -12,6 +12,7 @@ class DatenManager {
   static const String keyFavoriteOrder = 'favorite_order';
   static const String keyNormalOrder = 'normal_order';
   static const String keyHideOrder = 'hide_order';
+  static const String keyOfflineMode = 'offline_mode';
   static const String keyColorScheme = 'color_scheme';
   static const String keyOwnColorScheme = 'own_color_scheme';
   static const String keyModuleLayout = 'module_layout';
@@ -66,6 +67,16 @@ class DatenManager {
     } catch (e) {
       return [];
     }
+  }
+
+  static Future<void> saveOfflineMode(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(keyOfflineMode, value);
+  }
+
+  static Future<bool> loadOfflineMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(keyOfflineMode) ?? false;
   }
 
   static Future<void> saveColorScheme(int colorScheme) async {

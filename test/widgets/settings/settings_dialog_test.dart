@@ -34,6 +34,8 @@ void main() {
     List<double> hideOrder = const [],
     void Function(double id)? onHide,
     void Function(double id)? onUnHide,
+    bool offlineMode = false,
+    void Function()? onOfflineModeChange,
     int moduleLayout = 1,
     void Function(int type)? onLayoutChange,
   }) async {
@@ -50,6 +52,8 @@ void main() {
                     hideOrder: hideOrder,
                     onHide: onHide ?? (_) {},
                     onUnHide: onUnHide ?? (_) {},
+                    offlineMode: offlineMode,
+                    onOfflineModeChange: onOfflineModeChange ?? () {},
                     moduleLayout: moduleLayout,
                     onLayoutChange: onLayoutChange,
                   ),
@@ -71,6 +75,27 @@ void main() {
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Hidden Modules'), findsOneWidget);
     expect(find.text('Module Layout'), findsOneWidget);
+    expect(find.text('Disable online modules'), findsOneWidget);
+  });
+
+  testWidgets('toggling offline mode forwards to onOfflineModeChange', (
+    tester,
+  ) async {
+    bool toggled = false;
+    await openSettings(tester, onOfflineModeChange: () => toggled = true);
+
+    await tester.tap(
+      find.descendant(
+        of: find.ancestor(
+          of: find.text('Disable online modules'),
+          matching: find.byType(Row),
+        ),
+        matching: find.byType(Checkbox),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(toggled, isTrue);
   });
 
   testWidgets('close button dismisses the dialog', (tester) async {

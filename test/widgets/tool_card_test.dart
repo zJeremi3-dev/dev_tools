@@ -26,6 +26,7 @@ void main() {
           module: testModule,
           isFavorite: false,
           onToggleFavorite: () {},
+          isOnline: false,
           onSecondaryTapDown: (_) {},
         ),
       ),
@@ -43,6 +44,7 @@ void main() {
           module: testModule,
           isFavorite: false,
           onToggleFavorite: () {},
+          isOnline: false,
           onSecondaryTapDown: (_) {},
         ),
       ),
@@ -59,6 +61,7 @@ void main() {
           module: testModule,
           isFavorite: true,
           onToggleFavorite: () {},
+          isOnline: false,
           onSecondaryTapDown: (_) {},
         ),
       ),
@@ -78,6 +81,7 @@ void main() {
           module: testModule,
           isFavorite: false,
           onToggleFavorite: () => callCount++,
+          isOnline: false,
           onSecondaryTapDown: (_) {},
         ),
       ),
@@ -98,6 +102,7 @@ void main() {
           module: testModule,
           isFavorite: false,
           onToggleFavorite: () {},
+          isOnline: false,
           onSecondaryTapDown: (_) {},
         ),
       ),
@@ -118,6 +123,7 @@ void main() {
           module: testModule,
           isFavorite: false,
           onToggleFavorite: () {},
+          isOnline: false,
           onSecondaryTapDown: (_) {},
         ),
       ),
@@ -140,6 +146,7 @@ void main() {
           module: testModule,
           isFavorite: false,
           onToggleFavorite: () {},
+          isOnline: false,
           onSecondaryTapDown: (pos) => reportedPosition = pos,
         ),
       ),
@@ -176,6 +183,7 @@ void main() {
             module: longNameModule,
             isFavorite: false,
             onToggleFavorite: () {},
+            isOnline: false,
             onSecondaryTapDown: (_) {},
           ),
         ),
@@ -185,5 +193,24 @@ void main() {
     final textWidget = tester.widget<Text>(find.text(longNameModule.name));
     expect(textWidget.maxLines, 1);
     expect(textWidget.overflow, TextOverflow.ellipsis);
+  });
+
+  testWidgets('handles isOnline status correctly', (tester) async {
+    await tester.pumpWidget(
+      wrap(
+        ToolCard(
+          module: testModule,
+          isFavorite: false,
+          onToggleFavorite: () {},
+          isOnline: true,
+          onSecondaryTapDown: (_) {},
+        ),
+      ),
+    );
+
+    expect(
+      find.byWidgetPredicate((widget) => widget is ToolCard && widget.isOnline),
+      findsOneWidget,
+    );
   });
 }

@@ -227,6 +227,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                     hideOrder: controller.hideOrder,
                     onUnHide: controller.unhideModule,
                     onHide: controller.hideModule,
+                    offlineMode: controller.offlineMode,
+                    onOfflineModeChange: controller.toggleOfflineMode,
                     moduleLayout: controller.moduleLayout,
                     onLayoutChange: controller.setModuleLayout,
                     updateInfo: ref.read(updateCheckProvider).valueOrNull,
@@ -348,6 +350,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                                       ),
                                       onToggleFavorite: () =>
                                           controller.toggleFavorite(t.id),
+                                      isOnline: controller.onlineModules
+                                          .contains(t.id),
                                       onSecondaryTapDown: (pos) =>
                                           _showToolContextMenu(context, pos, t),
                                     ),
@@ -376,6 +380,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                                         ),
                                         onToggleFavorite: () =>
                                             controller.toggleFavorite(t.id),
+                                        isOnline: controller.onlineModules
+                                            .contains(t.id),
                                         onSecondaryTapDown: (pos) =>
                                             _showToolContextMenu(
                                               context,
@@ -431,6 +437,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         module: tools[index],
         isFavorite: controller.favoriteOrder.contains(tools[index].id),
         onToggleFavorite: () => controller.toggleFavorite(tools[index].id),
+        isOnline: controller.onlineModules.contains(tools[index].id),
         onSecondaryTapDown: (position) =>
             _showToolContextMenu(context, position, tools[index]),
       ),

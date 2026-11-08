@@ -6,12 +6,14 @@ class ToolCard extends StatelessWidget {
   final ToolModule module;
   final bool isFavorite;
   final VoidCallback onToggleFavorite;
+  final bool isOnline;
   final void Function(Offset position) onSecondaryTapDown;
   const ToolCard({
     super.key,
     required this.module,
     required this.isFavorite,
     required this.onToggleFavorite,
+    required this.isOnline,
     required this.onSecondaryTapDown,
   });
 
@@ -63,6 +65,10 @@ class ToolCard extends StatelessWidget {
                         ],
                       ),
                     ),
+                    if (isOnline) ...[
+                      Icon(Icons.wifi, size: 16, color: kAccentLight),
+                      SizedBox(width: 4),
+                    ],
                     Icon(Icons.chevron_right, color: kTextSecondary, size: 20),
                   ],
                 ),

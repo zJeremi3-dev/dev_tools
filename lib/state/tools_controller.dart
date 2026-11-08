@@ -19,6 +19,8 @@ class ToolsController extends ChangeNotifier {
   List<double> favoriteOrder = [];
   List<double> normalOrder = [];
   List<double> hideOrder = [];
+  bool offlineMode = false;
+  List<double> onlineModules = [16];
   int moduleLayout = 1;
 
   String searchQuery = "";
@@ -28,6 +30,9 @@ class ToolsController extends ChangeNotifier {
 
   List<ToolModule> get filteredTools {
     var list = tools;
+    if (offlineMode == true) {
+      list = list.where((t) => !onlineModules.contains(t.id)).toList();
+    }
     if (hideOrder.isNotEmpty) {
       list = list.where((t) => !hideOrder.contains(t.id)).toList();
     }
@@ -73,6 +78,7 @@ class ToolsController extends ChangeNotifier {
     normalOrder = await DatenManager.loadNormalOrder();
     favoriteOrder = await DatenManager.loadFavoriteOrder();
     hideOrder = await DatenManager.loadHideOrder();
+    offlineMode = await DatenManager.loadOfflineMode();
     moduleLayout = await DatenManager.loadModuleLayout();
     ownColorSchemes = await DatenManager.loadOwnColorSchemeData();
 
@@ -134,6 +140,12 @@ class ToolsController extends ChangeNotifier {
   void setModuleLayout(int type) {
     moduleLayout = type;
     DatenManager.saveModuleLayout(type);
+    notifyListeners();
+  }
+
+  void toggleOfflineMode() {
+    offlineMode = !offlineMode;
+    DatenManager.saveOfflineMode(offlineMode);
     notifyListeners();
   }
 

@@ -85,6 +85,7 @@ Widget buildTabularToolRow({
   required bool isFavorite,
   required VoidCallback onTap,
   required VoidCallback onToggleFavorite,
+  required bool isOnline,
   required void Function(Offset position) onSecondaryTapDown,
 }) {
   return Tooltip(
@@ -118,6 +119,10 @@ Widget buildTabularToolRow({
                   ],
                 ),
               ),
+              if (isOnline) ...[
+                Icon(Icons.wifi, size: 16, color: kAccentLight),
+                SizedBox(width: 4),
+              ],
               GestureDetector(
                 onTap: onToggleFavorite,
                 child: Icon(
