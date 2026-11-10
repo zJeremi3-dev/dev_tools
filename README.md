@@ -35,9 +35,9 @@ Dev-Tools works offline, except for these features, which contact third-party se
 | IP-Leak-Check | ipapi.co | Your IP is visible to the service (that is what the tool checks) | Only when you run the tool |
 | IP-Leak-Check (flag icons) | flagcdn.com | An image request (your IP is visible to the host) | Only when a result is shown |
 
-The **Disable online modules** setting hides every tool that needs the internet
-(currently only IP-Leak-Check, including its flag icons). The update check is
-separate and is not affected by it.
+The **Disable Online Modules** setting hides every tool that needs the internet
+(currently only IP-Leak-Check, including its flag icons).
+The update check is separate and can be turned off via **Disable Update Check**.
 
 ## Tech stack
 
@@ -66,7 +66,7 @@ The guiding principle: each layer has exactly one reason to change. `ToolsContro
 ## Download
 
 Grab the latest Windows installer from the [Releases page](https://github.com/zJeremi3-dev/dev_tools/releases/latest).
-Currently Windows-only; other platforms may follow. The installer is built with
+Currently, Windows-only; other platforms may follow. The installer is built with
 [Inno Setup](https://jrsoftware.org/isinfo.php). The app checks for updates on
 startup and can update itself in place.
 

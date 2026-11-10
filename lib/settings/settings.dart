@@ -18,8 +18,9 @@ class SettingsDialog extends StatefulWidget {
   final List<double> hideOrder;
   final void Function(double id) onUnHide;
   final void Function(double id) onHide;
-  final bool offlineMode;
-  final void Function() onOfflineModeChange;
+  final bool disableUpdateCheck;
+  final bool disableOnlineModules;
+  final void Function(int type) onOfflineModeChange;
   final int moduleLayout;
   final void Function(int type)? onLayoutChange;
   final UpdateInfo? updateInfo;
@@ -30,7 +31,8 @@ class SettingsDialog extends StatefulWidget {
     required this.hideOrder,
     required this.onUnHide,
     required this.onHide,
-    required this.offlineMode,
+    required this.disableUpdateCheck,
+    required this.disableOnlineModules,
     required this.onOfflineModeChange,
     required this.moduleLayout,
     this.onLayoutChange,
@@ -175,10 +177,24 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 },
               ),
               const SizedBox(height: 16),
+              Text(
+                "Online Features",
+                style: TextStyle(
+                  color: kTextSecondary,
+                  fontSize: 15,
+                  letterSpacing: 0.8,
+                ),
+              ),
+              SizedBox(height: 8),
               buildCheckboxOption(
-                "Disable online modules",
-                widget.offlineMode,
-                widget.onOfflineModeChange,
+                "Disable Update Check",
+                widget.disableUpdateCheck,
+                () => widget.onOfflineModeChange(1),
+              ),
+              buildCheckboxOption(
+                "Disable Online Modules",
+                widget.disableOnlineModules,
+                () => widget.onOfflineModeChange(2),
               ),
               const SizedBox(height: 16),
               ModuleLayoutSection(

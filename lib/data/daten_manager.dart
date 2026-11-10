@@ -69,14 +69,19 @@ class DatenManager {
     }
   }
 
-  static Future<void> saveOfflineMode(bool value) async {
+  static Future<void> saveOfflineMode(List<bool> list) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(keyOfflineMode, value);
+    final stringList = list.map((b) => b.toString()).toList();
+    await prefs.setStringList(keyOfflineMode, stringList);
   }
 
-  static Future<bool> loadOfflineMode() async {
+  static Future<List<bool>> loadOfflineMode() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(keyOfflineMode) ?? false;
+    final stringList = prefs.getStringList(keyOfflineMode);
+    if (stringList == null) {
+      return [false, false];
+    }
+    return stringList.map((s) => s == 'true').toList();
   }
 
   static Future<void> saveColorScheme(int colorScheme) async {

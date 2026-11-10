@@ -17,6 +17,7 @@ the installer today get the most recent *tagged* version below.
 - File-Converter Module
 - Description-Display in tabular layout
 - Setting to disable online modules
+- Setting to disable the update check
 
 
 ## [1.1.0] - 2026-10-17
