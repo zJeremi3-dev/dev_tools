@@ -34,8 +34,10 @@ void main() {
     List<double> hideOrder = const [],
     void Function(double id)? onHide,
     void Function(double id)? onUnHide,
+    bool disableUpdateCheck = false,
+    bool disableOnlineModules = false,
     bool offlineMode = false,
-    void Function()? onOfflineModeChange,
+    void Function(int type)? onOfflineModeChange,
     int moduleLayout = 1,
     void Function(int type)? onLayoutChange,
   }) async {
@@ -52,8 +54,9 @@ void main() {
                     hideOrder: hideOrder,
                     onHide: onHide ?? (_) {},
                     onUnHide: onUnHide ?? (_) {},
-                    offlineMode: offlineMode,
-                    onOfflineModeChange: onOfflineModeChange ?? () {},
+                    disableUpdateCheck: disableUpdateCheck,
+                    disableOnlineModules: disableOnlineModules,
+                    onOfflineModeChange: onOfflineModeChange ?? (_) {},
                     moduleLayout: moduleLayout,
                     onLayoutChange: onLayoutChange,
                   ),
@@ -70,33 +73,64 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('shows the settings title and both sections', (tester) async {
+  testWidgets('shows the settings title and online features options', (
+    tester,
+  ) async {
     await openSettings(tester);
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Hidden Modules'), findsOneWidget);
     expect(find.text('Module Layout'), findsOneWidget);
-    expect(find.text('Disable online modules'), findsOneWidget);
+    expect(find.text('Disable Update Check'), findsOneWidget);
+    expect(find.text('Disable Online Modules'), findsOneWidget);
   });
 
-  testWidgets('toggling offline mode forwards to onOfflineModeChange', (
-    tester,
-  ) async {
-    bool toggled = false;
-    await openSettings(tester, onOfflineModeChange: () => toggled = true);
+  testWidgets(
+    'toggling disable update check forwards type 1 to onOfflineModeChange',
+    (tester) async {
+      int? toggledType;
+      await openSettings(
+        tester,
+        onOfflineModeChange: (type) => toggledType = type,
+      );
 
-    await tester.tap(
-      find.descendant(
-        of: find.ancestor(
-          of: find.text('Disable online modules'),
-          matching: find.byType(Row),
+      await tester.tap(
+        find.descendant(
+          of: find.ancestor(
+            of: find.text('Disable Update Check'),
+            matching: find.byType(Row),
+          ),
+          matching: find.byType(Checkbox),
         ),
-        matching: find.byType(Checkbox),
-      ),
-    );
-    await tester.pumpAndSettle();
+      );
+      await tester.pumpAndSettle();
 
-    expect(toggled, isTrue);
-  });
+      expect(toggledType, 1);
+    },
+  );
+
+  testWidgets(
+    'toggling disable online modules forwards type 2 to onOfflineModeChange',
+    (tester) async {
+      int? toggledType;
+      await openSettings(
+        tester,
+        onOfflineModeChange: (type) => toggledType = type,
+      );
+
+      await tester.tap(
+        find.descendant(
+          of: find.ancestor(
+            of: find.text('Disable Online Modules'),
+            matching: find.byType(Row),
+          ),
+          matching: find.byType(Checkbox),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(toggledType, 2);
+    },
+  );
 
   testWidgets('close button dismisses the dialog', (tester) async {
     await openSettings(tester);
@@ -125,7 +159,7 @@ void main() {
     int? newLayout;
     await openSettings(tester, onLayoutChange: (type) => newLayout = type);
 
-    await tester.tap(find.byType(Checkbox).at(1)); // "Category"
+    await tester.tap(find.byType(Checkbox).at(3));
     await tester.pumpAndSettle();
 
     expect(newLayout, 2);
@@ -140,10 +174,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Settings'), findsNothing);
-      expect(
-        find.text('Color Scheme'),
-        findsOneWidget,
-      ); // now the dialog's own title
+      expect(find.text('Color Scheme'), findsOneWidget);
     },
   );
 }

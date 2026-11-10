@@ -19,7 +19,8 @@ class ToolsController extends ChangeNotifier {
   List<double> favoriteOrder = [];
   List<double> normalOrder = [];
   List<double> hideOrder = [];
-  bool offlineMode = false;
+  bool disableUpdateCheck = false;
+  bool disableOnlineModules = false;
   List<double> onlineModules = [16];
   int moduleLayout = 1;
 
@@ -30,7 +31,7 @@ class ToolsController extends ChangeNotifier {
 
   List<ToolModule> get filteredTools {
     var list = tools;
-    if (offlineMode == true) {
+    if (disableOnlineModules == true) {
       list = list.where((t) => !onlineModules.contains(t.id)).toList();
     }
     if (hideOrder.isNotEmpty) {
@@ -78,7 +79,8 @@ class ToolsController extends ChangeNotifier {
     normalOrder = await DatenManager.loadNormalOrder();
     favoriteOrder = await DatenManager.loadFavoriteOrder();
     hideOrder = await DatenManager.loadHideOrder();
-    offlineMode = await DatenManager.loadOfflineMode();
+    disableUpdateCheck = (await DatenManager.loadOfflineMode())[0];
+    disableOnlineModules = (await DatenManager.loadOfflineMode())[1];
     moduleLayout = await DatenManager.loadModuleLayout();
     ownColorSchemes = await DatenManager.loadOwnColorSchemeData();
 
@@ -143,9 +145,10 @@ class ToolsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleOfflineMode() {
-    offlineMode = !offlineMode;
-    DatenManager.saveOfflineMode(offlineMode);
+  void toggleOfflineMode(int type) {
+    if (type == 1) disableUpdateCheck = !disableUpdateCheck;
+    if (type == 2) disableOnlineModules = !disableOnlineModules;
+    DatenManager.saveOfflineMode([disableUpdateCheck, disableOnlineModules]);
     notifyListeners();
   }
 

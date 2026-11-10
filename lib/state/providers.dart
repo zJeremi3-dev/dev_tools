@@ -10,6 +10,7 @@ final initialLoadProvider = FutureProvider<void>((ref) async {
   await ref.read(toolsControllerProvider).load();
 });
 
-final updateCheckProvider = FutureProvider<UpdateInfo?>(
-  (ref) => checkForUpdate(),
-);
+final updateCheckProvider = FutureProvider<UpdateInfo?>((ref) async {
+  final controller = ref.watch(toolsControllerProvider);
+  return controller.disableUpdateCheck ? null : checkForUpdate();
+});
