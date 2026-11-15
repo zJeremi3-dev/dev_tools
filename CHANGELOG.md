@@ -20,7 +20,8 @@ the installer today get the most recent *tagged* version below.
 - Setting to disable the update check
 
 ### Changed
-- updated flutter version
+- Updated flutter version
+- Windows window title
 
 
 ## [1.1.0] - 2026-10-17
