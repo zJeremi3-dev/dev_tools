@@ -3,7 +3,8 @@ import '../widgets/widgets.dart';
 
 import 'dart:io';
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
+
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:super_clipboard/super_clipboard.dart';
@@ -120,9 +121,8 @@ class _QRGenDialogState extends State<QRGenDialog> {
     await clipboard.write([item]);
 
     if (!mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text("QR code copied")));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text("QR code copied")));
   }
 
   Future<Uint8List?> _captureQrBytes() async {
@@ -151,9 +151,8 @@ class _QRGenDialogState extends State<QRGenDialog> {
     }
 
     if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Saved: $path')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Saved: $path')));
     }
   }
 

@@ -3,7 +3,7 @@ import 'package:dev_tools/settings/color_scheme/color_scheme_dialog.dart';
 import 'package:dev_tools/settings/color_scheme/modify_ownscheme_dialog.dart';
 import 'package:dev_tools/settings/color_scheme/scheme_adder.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';

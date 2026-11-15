@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../colors.dart';
 import '../../state/providers.dart';
+
 import 'package:dev_tools/widgets/shared_widgets.dart';
 
 import 'color_picker_overlay.dart';
@@ -81,9 +82,8 @@ class _SchemeAdderSectionState extends ConsumerState<SchemeAdderSection> {
                         child: TextField(
                           maxLength: 24,
                           controller: _controller.nameController,
-                          decoration: fieldDecoration(
-                            "Scheme Name",
-                          ).copyWith(counterText: ""),
+                          decoration: fieldDecoration("Scheme Name")
+                              .copyWith(counterText: ""),
                           style: TextStyle(color: kTextPrimary, fontSize: 14),
                         ),
                       ),
@@ -250,9 +250,8 @@ class _SchemeAdderSectionState extends ConsumerState<SchemeAdderSection> {
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9a-fA-F]')),
                   ],
                   controller: controller,
-                  decoration: fieldDecoration(
-                    "",
-                  ).copyWith(prefixText: "0x ", counterText: ""),
+                  decoration: fieldDecoration("")
+                      .copyWith(prefixText: "0x ", counterText: ""),
                   style: TextStyle(color: kTextPrimary, fontSize: 14),
                   onChanged: (value) => _controller.onColorChanged(
                     label,

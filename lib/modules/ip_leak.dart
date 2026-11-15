@@ -1,8 +1,10 @@
 import '../colors.dart';
 import '../widgets/widgets.dart';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 class IpLeakDialog extends StatefulWidget {
@@ -320,8 +322,7 @@ class IpLeakCheck {
     final response = await http.get(
       url,
       headers: {
-        'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       },
     );
     if (response.statusCode == 200) {

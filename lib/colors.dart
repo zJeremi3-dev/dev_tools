@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+
 import 'own_colors.dart';
 
 Color kBgColor = Color(0xFF0F0F13);

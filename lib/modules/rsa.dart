@@ -3,8 +3,9 @@ import 'dart:isolate';
 import '../colors.dart';
 import '../widgets/widgets.dart';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
+
 import 'dart:math';
 
 BigInt _generatePrime() {

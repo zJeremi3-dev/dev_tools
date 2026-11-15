@@ -2,7 +2,7 @@ import 'package:dev_tools/colors.dart';
 import 'package:dev_tools/settings/color_scheme/color_picker_overlay.dart';
 import 'package:dev_tools/settings/color_scheme/scheme_adder_controller.dart';
 import 'package:dev_tools/state/providers.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';

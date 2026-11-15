@@ -2,7 +2,8 @@ import '../colors.dart';
 import '../widgets/widgets.dart';
 
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
+import 'package:material_ui/material_ui.dart';
 import 'package:crypto/crypto.dart';
 
 class HashGenDialog extends StatefulWidget {

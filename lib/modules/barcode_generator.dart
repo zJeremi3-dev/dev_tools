@@ -3,7 +3,8 @@ import '../widgets/widgets.dart';
 
 import 'dart:io';
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
+
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:super_clipboard/super_clipboard.dart';
@@ -83,9 +84,8 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
     await clipboard.write([item]);
 
     if (!mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text("Barcode copied")));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text("Barcode copied")));
   }
 
   Future<void> _downloadBarcode() async {
@@ -98,9 +98,8 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
         bytes: bytes,
       );
       if (path != null && mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Saved: $path')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Saved: $path')));
       }
       return;
     }
@@ -112,9 +111,8 @@ class _BarcodeGenDialogState extends State<BarcodeGenDialog> {
     await file.writeAsBytes(bytes);
 
     if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Saved: ${file.path}')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Saved: ${file.path}')));
     }
   }
 

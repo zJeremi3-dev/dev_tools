@@ -19,6 +19,9 @@ the installer today get the most recent *tagged* version below.
 - Setting to disable online modules
 - Setting to disable the update check
 
+### Changed
+- updated flutter version
+
 
 ## [1.1.0] - 2026-10-17
 ### Added

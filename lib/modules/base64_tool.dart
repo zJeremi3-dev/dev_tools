@@ -2,7 +2,8 @@ import '../colors.dart';
 import '../widgets/widgets.dart';
 
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
+import 'package:material_ui/material_ui.dart';
 
 class Base64Dialog extends StatefulWidget {
   const Base64Dialog({super.key});

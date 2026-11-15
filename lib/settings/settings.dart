@@ -1,4 +1,5 @@
 import 'package:dev_tools/settings/color_scheme/color_scheme_dialog.dart';
+
 import 'dart:io';
 
 import '../colors.dart';
@@ -7,9 +8,11 @@ import '../models/tool_module.dart';
 import 'hidden_modules.dart';
 import 'module_layout.dart';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+
 import '../services/update_checker.dart';
 import '../services/self_updater.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 

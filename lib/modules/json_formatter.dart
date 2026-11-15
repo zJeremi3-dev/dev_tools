@@ -2,7 +2,8 @@ import '../colors.dart';
 import '../widgets/widgets.dart';
 
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
+import 'package:material_ui/material_ui.dart';
 
 class JsonFormatDialog extends StatefulWidget {
   const JsonFormatDialog({super.key});

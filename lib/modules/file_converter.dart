@@ -5,7 +5,7 @@ import '../colors.dart';
 import '../widgets/widgets.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image/image.dart' as img;
 import 'package:pdf/widgets.dart' as pw;
@@ -104,9 +104,8 @@ Future<Uint8List> _convertBytes(Map<String, dynamic> args) async {
         );
         return await doc.save();
       case 'json (formatted)':
-        final pretty = const JsonEncoder.withIndent(
-          '  ',
-        ).convert(jsonDecode(text));
+        final pretty = const JsonEncoder.withIndent('  ')
+            .convert(jsonDecode(text));
         return Uint8List.fromList(utf8.encode(pretty));
     }
   }
@@ -148,9 +147,8 @@ class _FileConverterDialogState extends State<FileConverterDialog> {
   }
 
   void _snack(String msg) {
-    ScaffoldMessenger.maybeOf(
-      context,
-    )?.showSnackBar(SnackBar(content: Text(msg)));
+    ScaffoldMessenger.maybeOf(context)
+        ?.showSnackBar(SnackBar(content: Text(msg)));
   }
 
   Future<void> _uploadFile() async {

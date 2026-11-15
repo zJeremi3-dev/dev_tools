@@ -33,15 +33,12 @@ void main() {
       expect(await DatenManager.loadHideOrder(), [4.0]);
     });
 
-    test(
-      'loadFavoriteOrder returns an empty list instead of crashing on corrupted data',
-      () async {
-        SharedPreferences.setMockInitialValues({
-          DatenManager.keyFavoriteOrder: 'not-valid-json{{{',
-        });
-        expect(await DatenManager.loadFavoriteOrder(), isEmpty);
-      },
-    );
+    test('loadFavoriteOrder returns an empty list instead of crashing on corrupted data', () async {
+      SharedPreferences.setMockInitialValues({
+        DatenManager.keyFavoriteOrder: 'not-valid-json{{{',
+      });
+      expect(await DatenManager.loadFavoriteOrder(), isEmpty);
+    });
   });
 
   group('color scheme', () {

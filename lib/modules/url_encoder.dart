@@ -1,7 +1,7 @@
 import '../colors.dart';
 import '../widgets/widgets.dart';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class UrlEncodeDialog extends StatefulWidget {
   const UrlEncodeDialog({super.key});

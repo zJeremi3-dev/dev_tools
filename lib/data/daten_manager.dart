@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../own_colors.dart';
 
 /// Thin wrapper around [SharedPreferences] for all app persistence.
